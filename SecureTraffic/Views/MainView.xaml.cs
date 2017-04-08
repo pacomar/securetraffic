@@ -10,5 +10,7 @@ namespace SecureTraffic
 
 			BindingContext = new MainViewModel();
 		}
+
+
 	}
 }

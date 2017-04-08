@@ -25,3 +25,6 @@ using Android.App;
 
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
+[assembly: UsesFeature("android.hardware.location", Required = true)]
+[assembly: UsesFeature("android.hardware.location.gps", Required = true)]
+[assembly: UsesFeature("android.hardware.location.network", Required = true)]

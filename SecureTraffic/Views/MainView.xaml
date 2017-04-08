@@ -10,8 +10,8 @@
 		<Label
 		  Text="{Binding TextPosition}"
 		  HorizontalOptions="Center"/>
-		<Button 
-        Text="Enviar"
-        Command="{Binding GetPosition}"/>
+		<Button
+			Text="Enviar"
+	        Command="{Binding GetPosition}"/>
 	</StackLayout>
 </ContentPage>
