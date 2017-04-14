@@ -5,64 +5,21 @@ using Plugin.Geolocator;
 using System.Threading.Tasks;
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace SecureTraffic
 {
-	public class MainViewModel : INotifyPropertyChanged
+	public class MainViewModel
 	{
-		private Coordinate _position;
-		public ICommand GetPosition { get; private set; }
-		private bool canDownload = true;
-
 		public MainViewModel()
 		{
-			_position = new Coordinate(0.0, 0.0);
-			GetPosition = new Command(async () => await GetPositionAsync(), () => canDownload);
-		}
-
-		public string TextPosition
-		{
-			get { return _position.ToString(); }
-		}
-
-		async Task GetPositionAsync()
-		{
-			CanInitiateNewDownload(false);
-			_position = new Coordinate(0.0, 0.0);
-
-			try
-			{	
-				var locator = CrossGeolocator.Current;
-				locator.DesiredAccuracy = 50;
-
-				var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
-				if(position == null)
-					return;
-
-				_position = new Coordinate(position.Latitude, position.Longitude);
-				RaisePropertyChanged("TextPosition");
-			}
-			catch(Exception ex)
+			string rnd = new Random().Next(int.MinValue, int.MaxValue).ToString();
+			var tokenGenerator = new Firebase.Xamarin.Token.TokenGenerator("zHGOXaynKRyC7QZqe1GWp30ZhWmhRP4qtnEorl3D");
+			var authPayload = new Dictionary<string, object>()
 			{
-			  Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex);
-			}
-
-			CanInitiateNewDownload(true);
+				{"uid", rnd.ToString()}
+			};
+			App.token = tokenGenerator.CreateToken(authPayload);
 		}
-
-		void CanInitiateNewDownload(bool value)
-		{
-			canDownload = value;
-			((Command)GetPosition).ChangeCanExecute();   
-		}
-
-		private void RaisePropertyChanged(string propertyName)
-		{
-			var handle = PropertyChanged;
-			if (handle != null)
-				handle(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }

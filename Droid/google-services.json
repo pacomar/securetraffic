@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "518671585816",
+    "firebase_url": "https://securetraffic-f6abc.firebaseio.com",
+    "project_id": "securetraffic-f6abc",
+    "storage_bucket": "securetraffic-f6abc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:518671585816:android:4eedb4a030251a97",
+        "android_client_info": {
+          "package_name": "com.securetraffic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "518671585816-88a7v23kv883148g4j5dabgccdqgb0og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4Cmw0-yoBoL6V_oo9B0lr1Q54kfyBBW0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
