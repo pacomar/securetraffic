@@ -65,7 +65,7 @@ namespace SecureTraffic
                 if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude) < distancePosibleAlert)
                 {
                     infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude);
-                    address = infoVehicle.direccionVehiculoLento;
+                    address = infoVehicle.adressSlowVehicule;
                 }
 
                 var pin = new Pin
@@ -77,7 +77,7 @@ namespace SecureTraffic
                 };
                 this._map.Pins.Add(pin);
 
-                if (infoVehicle.direccionVehiculoLento == infoVehicle.direccionVehiculoPropio && infoVehicle.distancia < alertDistance)
+                if (infoVehicle.adressSlowVehicule == infoVehicle.adressMyVehicule && infoVehicle.distance < alertDistance)
                 {
                     //LANZAR ALERTAS
                 }
@@ -141,10 +141,10 @@ namespace SecureTraffic
                     JSONObject distOb = newDisTimeOb.GetJSONObject("distance");
                     JSONObject timeOb = newDisTimeOb.GetJSONObject("duration");
 
-                    informacionVehiculo.distancia = Int32.Parse(distOb.GetString("value"));
-                    informacionVehiculo.tiempo = Int32.Parse(timeOb.GetString("value"));
-                    informacionVehiculo.direccionVehiculoLento = newDisTimeOb.GetString("value");
-                    informacionVehiculo.direccionVehiculoPropio = newDisTimeOb.GetString("value");
+                    informacionVehiculo.distance = Int32.Parse(distOb.GetString("value"));
+                    informacionVehiculo.time = Int32.Parse(timeOb.GetString("value"));
+                    informacionVehiculo.adressSlowVehicule = newDisTimeOb.GetString("end_address");
+                    informacionVehiculo.adressMyVehicule = newDisTimeOb.GetString("start_address");
 
                     return informacionVehiculo;
                 }

@@ -8,12 +8,12 @@ namespace SecureTraffic.Models
 {
     public class InfoCloseVehicule
     {
-        public int distancia { get; set; } = int.MaxValue;
+        public int distance { get; set; } = int.MaxValue;
 
-        public int tiempo { get; set; } = int.MaxValue;
+        public int time { get; set; } = int.MaxValue;
 
-        public string direccionVehiculoLento { get; set; } = "";
+        public string adressSlowVehicule { get; set; } = "";
 
-        public string direccionVehiculoPropio { get; set; } = "";
+        public string adressMyVehicule { get; set; } = "";
     }
 }
