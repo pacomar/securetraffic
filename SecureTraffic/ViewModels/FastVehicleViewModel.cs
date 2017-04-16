@@ -15,6 +15,8 @@ namespace SecureTraffic
     {
         private Map _map { get; set; }
         private Position myPosition;
+        private int alertDistance = 500;
+        private int distancePosibleAlert = 1000;
 
         public FastVehicleViewModel(Map _map)
         {
@@ -58,11 +60,12 @@ namespace SecureTraffic
             foreach (var vehicle in vehicles)
             {
                 string address = "Too far";
+                InfoCloseVehicule infoVehicle = new InfoCloseVehicule();
 
-                if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude) < 1000)
+                if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude) < distancePosibleAlert)
                 {
-                    InfoCloseVehicule GetInformationCloseVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude);
-                    address = GetInformationCloseVehicle.direccionVehiculoLento;
+                    infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude);
+                    address = infoVehicle.direccionVehiculoLento;
                 }
 
                 var pin = new Pin
@@ -73,6 +76,11 @@ namespace SecureTraffic
                     Address = address
                 };
                 this._map.Pins.Add(pin);
+
+                if (infoVehicle.direccionVehiculoLento == infoVehicle.direccionVehiculoPropio && infoVehicle.distancia < alertDistance)
+                {
+                    //LANZAR ALERTAS
+                }
             }
 
             return true;
@@ -106,7 +114,7 @@ namespace SecureTraffic
         /// <param name="fromLat">Latitud origen</param>
         /// <param name="toLong">Longitud destino</param>
         /// <param name="toLat">Latitud destino</param>
-        /// <returns>Devuelve informacion de si estan en la misma carretera, </returns>
+        /// <returns>Devuelve informacion de si estan en la misma carretera, distancia por carretera, tiempo</returns>
         private async Task<InfoCloseVehicule> GetInformationCloseVehicle(double fromLong, double fromLat,
                     double toLong, double toLat)
         {
