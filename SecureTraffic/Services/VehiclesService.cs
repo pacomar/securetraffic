@@ -31,11 +31,11 @@ namespace SecureTraffic
 			return item.Key;
 		}*/
 
-		public async Task<IReadOnlyCollection<FirebaseObject<Coordinate>>> GetVehicles()
+		public async Task<IReadOnlyCollection<FirebaseObject<MyPosition>>> GetVehicles()
 		{
 			var items = await firebase
-				.Child("Coordinate")
-				.OnceAsync<Coordinate>();
+				.Child("Position")
+				.OnceAsync<MyPosition>();
 
 			return items;
 		}

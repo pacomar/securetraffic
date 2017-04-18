@@ -61,16 +61,16 @@ namespace SecureTraffic
                 string address = "Too far";
                 InfoCloseVehicule infoVehicle = new InfoCloseVehicule();
 
-                if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude) < distancePosibleAlert)
+				if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude) < distancePosibleAlert)
                 {
-                    infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Latitude, vehicle.Object.Longitude);
+                    infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude);
                     address = infoVehicle.adressSlowVehicule;
                 }
 
                 var pin = new Pin
                 {
                     Type = PinType.Place,
-                    Position = new Position(vehicle.Object.Latitude, vehicle.Object.Longitude),
+                    Position = new Position(vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude),
                     Label = "slow vehicle",
                     Address = address
                 };
