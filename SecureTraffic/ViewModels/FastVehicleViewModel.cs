@@ -6,7 +6,6 @@ using Plugin.Geolocator;
 using Xamarin.Forms.Maps;
 using Firebase.Xamarin.Database;
 using SecureTraffic.Models;
-using Org.Json;
 using System.Net.Http;
 
 namespace SecureTraffic
@@ -131,20 +130,26 @@ namespace SecureTraffic
                 // ... Display the result.
                 if (result != null)
                 {
-                    JSONObject json = new JSONObject(result);
-                    JSONArray routeArray = json.GetJSONArray("routes");
-                    JSONObject routes = routeArray.GetJSONObject(0);
+                    var JSONObject = Newtonsoft.Json.Linq.JObject.Parse(result);
 
-                    JSONArray newTempARr = routes.GetJSONArray("legs");
-                    JSONObject newDisTimeOb = newTempARr.GetJSONObject(0);
+                    string distancia = (string)JSONObject["routes"][0]["legs"][0]["distance"];
+                    string tiempo = (string)JSONObject["routes"][0]["legs"][0]["duration"];
+                    string direccionVehiculo = (string)JSONObject["routes"][0]["legs"][0]["end_address"];
+                    string direccionPropia = (string)JSONObject["routes"][0]["legs"][0]["start_address"];
 
-                    JSONObject distOb = newDisTimeOb.GetJSONObject("distance");
-                    JSONObject timeOb = newDisTimeOb.GetJSONObject("duration");
+                    //JSONArray routeArray = json.GetJSONArray("routes");
+                    //JSONObject routes = routeArray.GetJSONObject(0);
 
-                    informacionVehiculo.distance = Int32.Parse(distOb.GetString("value"));
-                    informacionVehiculo.time = Int32.Parse(timeOb.GetString("value"));
-                    informacionVehiculo.adressSlowVehicule = newDisTimeOb.GetString("end_address");
-                    informacionVehiculo.adressMyVehicule = newDisTimeOb.GetString("start_address");
+                    //JSONArray newTempARr = routes.GetJSONArray("legs");
+                    //JSONObject newDisTimeOb = newTempARr.GetJSONObject(0);
+
+                    //JSONObject distOb = newDisTimeOb.GetJSONObject("distance");
+                    //JSONObject timeOb = newDisTimeOb.GetJSONObject("duration");
+
+                    informacionVehiculo.distance = Int32.Parse(distancia);
+                    informacionVehiculo.time = Int32.Parse(tiempo);
+                    informacionVehiculo.adressSlowVehicule = direccionVehiculo;
+                    informacionVehiculo.adressMyVehicule = direccionPropia;
 
                     return informacionVehiculo;
                 }
