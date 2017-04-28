@@ -98,14 +98,15 @@ namespace SecureTraffic
 					{
 						Coordinate = new Coordinate(e.Position.Latitude, e.Position.Longitude),
 						Speed = e.Position.Speed,
-						Token = App.token,
-						Vehicle = _vehicle
+						Vehicle = _vehicle,
+						Time = Helper.ConvertToTimestamp(DateTime.Now).ToString(),
+						Token = App.token
 					};
 					await _vehServ.SetPositionVehicle(aux);
 
 
 					this._position = "Lat: " + position.Latitude.ToString() + " Long: " + position.Longitude.ToString();
-					this._time = position.Timestamp.ToString();
+					this._time = posiion.Timestamp.ToString();
 					this._heading = position.Heading.ToString();
 					this._speed = position.Speed.ToString();
 					this._accuracy = position.Accuracy.ToString();

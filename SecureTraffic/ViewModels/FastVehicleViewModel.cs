@@ -20,8 +20,7 @@ namespace SecureTraffic
         public FastVehicleViewModel(Map _map)
         {
             this._map = _map;
-            CenterMap();
-            UpdateMarkers();
+			CenterMap();
         }
 
         public async Task<bool> CenterMap()
@@ -42,6 +41,8 @@ namespace SecureTraffic
                 this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
 
                 res = true;
+
+                UpdateMarkers();
             }
             catch (Exception ex)
             {
@@ -55,6 +56,7 @@ namespace SecureTraffic
         {
             VehiclesService _vehServ = new VehiclesService();
             var vehicles = await _vehServ.GetVehicles();
+			this._map.Pins.Clear();
 
             foreach (var vehicle in vehicles)
             {
@@ -63,8 +65,8 @@ namespace SecureTraffic
 
 				if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude) < distancePosibleAlert)
                 {
-                    infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude);
-                    address = infoVehicle.adressSlowVehicule;
+                    //infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude);
+                    //address = infoVehicle.adressSlowVehicule;
                 }
 
                 var pin = new Pin
@@ -81,6 +83,9 @@ namespace SecureTraffic
                     //LANZAR ALERTAS
                 }
             }
+
+			await Task.Delay(5000);
+			UpdateMarkers();
 
             return true;
         }
