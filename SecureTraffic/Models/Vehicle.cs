@@ -3,7 +3,9 @@ namespace SecureTraffic
 {
 	public enum Vehicle
 	{
-		Bike,
-		Tractor
+		Bici,
+		Tractor,
+        Obra,
+        Otro
 	}
 }

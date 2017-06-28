@@ -6,17 +6,17 @@ using Xamarin.Forms;
 
 namespace SecureTraffic
 {
-	public partial class SlowVehicleView : ContentPage
+	public partial class SettingsView : ContentPage
 	{
-		public SlowVehicleView(Vehicle veh)
+		public SettingsView()
 		{
             var attributesWindow = new WindowManagerLayoutParams();
 
 			InitializeComponent();
 
-			this.Title = "Vehículo lento: " + veh;
-
-			BindingContext = new SlowVehicleViewModel(veh);
+			this.Title = "Configuración";
+            
+            BindingContext = new SettingsViewModel();
 		}
 
     }

@@ -13,7 +13,7 @@ namespace SecureTraffic
 
 			GoSlowVehicleBike.Clicked += async(sender, args) =>
 			{
-				await Navigation.PushAsync(new SlowVehicleView(Vehicle.Bike));
+				await Navigation.PushAsync(new SlowVehicleView(Vehicle.Bici));
 			};
 
 			GoSlowVehicleTractor.Clicked += async(sender, args) =>

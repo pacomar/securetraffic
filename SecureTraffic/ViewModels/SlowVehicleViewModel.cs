@@ -106,7 +106,7 @@ namespace SecureTraffic
 
 
 					this._position = "Lat: " + position.Latitude.ToString() + " Long: " + position.Longitude.ToString();
-					this._time = posiion.Timestamp.ToString();
+					this._time = position.Timestamp.ToString();
 					this._heading = position.Heading.ToString();
 					this._speed = position.Speed.ToString();
 					this._accuracy = position.Accuracy.ToString();

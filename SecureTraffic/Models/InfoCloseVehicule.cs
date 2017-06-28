@@ -12,6 +12,10 @@ namespace SecureTraffic.Models
 
         public int time { get; set; } = int.MaxValue;
 
+        public string distanceText { get; set; } = "";
+
+        public string timeText { get; set; } = "";
+
         public string adressSlowVehicule { get; set; } = "";
 
         public string adressMyVehicule { get; set; } = "";

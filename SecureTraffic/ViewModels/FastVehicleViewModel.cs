@@ -7,6 +7,10 @@ using Xamarin.Forms.Maps;
 using Firebase.Xamarin.Database;
 using SecureTraffic.Models;
 using System.Net.Http;
+using System.Net;
+using System.IO;
+using Xamarin.Forms;
+using Plugin.MediaManager;
 
 namespace SecureTraffic
 {
@@ -16,13 +20,28 @@ namespace SecureTraffic
         private Position myPosition;
         private int alertDistance = 500;
         private int distancePosibleAlert = 1000;
+        private Image imagen { get; set; }
 
-        public FastVehicleViewModel(Map _map)
+        public FastVehicleViewModel(Map _map,Image imagen)
         {
+            string rnd = new Random().Next(int.MinValue, int.MaxValue).ToString();
+            var tokenGenerator = new Firebase.Xamarin.Token.TokenGenerator("zHGOXaynKRyC7QZqe1GWp30ZhWmhRP4qtnEorl3D");
+            var authPayload = new Dictionary<string, object>()
+            {
+                {"uid", rnd.ToString()}
+            };
+            App.token = tokenGenerator.CreateToken(authPayload);
+
             this._map = _map;
+            this.imagen = imagen;
+
 			CenterMap();
         }
 
+        /// <summary>
+        /// Funcion que situa nuestra posicion en el mapa y llama a la funcion de actualizar marcadores
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> CenterMap()
         {
             bool res = false;
@@ -52,40 +71,45 @@ namespace SecureTraffic
             return res;
         }
 
+        /// <summary>
+        /// Funcion que actualiza los puntos del mapa, comprueba la distancia por coordendas, si esta muy cerca llama a la API de google y lanza aviso si es necesario
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> UpdateMarkers()
         {
             VehiclesService _vehServ = new VehiclesService();
             var vehicles = await _vehServ.GetVehicles();
 			this._map.Pins.Clear();
 
+            bool alertar = false;
             foreach (var vehicle in vehicles)
             {
-                string address = "Too far";
                 InfoCloseVehicule infoVehicle = new InfoCloseVehicule();
 
 				if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude) < distancePosibleAlert)
                 {
-                    //infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude);
-                    //address = infoVehicle.adressSlowVehicule;
+                    infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude);
                 }
 
                 var pin = new Pin
                 {
                     Type = PinType.Place,
                     Position = new Position(vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude),
-                    Label = "slow vehicle",
-                    Address = address
+                    Label = vehicle.Object.Vehicle.ToString(),
                 };
                 this._map.Pins.Add(pin);
 
                 if (infoVehicle.adressSlowVehicule == infoVehicle.adressMyVehicule && infoVehicle.distance < alertDistance)
                 {
-                    //LANZAR ALERTAS
+                    alertar = true;
+                    Alertar();
                 }
             }
+            
+            if (!alertar) PararAlertar();
 
-			await Task.Delay(5000);
-			UpdateMarkers();
+            await Task.Delay(5000);
+			CenterMap();
 
             return true;
         }
@@ -97,7 +121,7 @@ namespace SecureTraffic
         /// <param name="fromLat">Latitud origen</param>
         /// <param name="toLong">Longitud destino</param>
         /// <param name="toLat">Latitud destino</param>
-        /// <returns>Resultado en m de la distancia</returns>
+        /// <returns>Resultado en millas de la distancia</returns>
         private double CalculateDistanceLine(double fromLong, double fromLat,
                     double toLong, double toLat)
         {
@@ -123,43 +147,92 @@ namespace SecureTraffic
                     double toLong, double toLat)
         {
             InfoCloseVehicule informacionVehiculo = new InfoCloseVehicule();
-            string url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + fromLong + "," + fromLat + "&destination=" + toLong + ","  + toLat + "&sensor=false";
+            var url = HttpWebRequest.Create("https://maps.googleapis.com/maps/api/directions/json?origin=" + fromLong.ToString().Replace(',', '.') + "," + fromLat.ToString().Replace(',', '.') + "&destination=" + toLong.ToString().Replace(',', '.') + "," + toLat.ToString().Replace(',', '.') + "&sensor=false");/*&key=AIzaSyAC25WcCdJIF5uvWLXMgGuYK4Y9sBZpJ34");*/
 
-            using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage response = await client.GetAsync(url))
-            using (HttpContent content = response.Content)
+            url.ContentType = "application/json";
+            url.Method = "GET";
+
+            using (HttpWebResponse response = url.GetResponseAsync().Result as HttpWebResponse)
             {
-                // ... Read the string.
-                string result = await content.ReadAsStringAsync();
-
-                // ... Display the result.
-                if (result != null)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var JSONObject = Newtonsoft.Json.Linq.JObject.Parse(result);
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    var content = reader.ReadToEnd();
 
-                    string distancia = (string)JSONObject["routes"][0]["legs"][0]["distance"];
-                    string tiempo = (string)JSONObject["routes"][0]["legs"][0]["duration"];
-                    string direccionVehiculo = (string)JSONObject["routes"][0]["legs"][0]["end_address"];
-                    string direccionPropia = (string)JSONObject["routes"][0]["legs"][0]["start_address"];
+                    var JSONObject = Newtonsoft.Json.Linq.JObject.Parse(content);
 
-                    //JSONArray routeArray = json.GetJSONArray("routes");
-                    //JSONObject routes = routeArray.GetJSONObject(0);
-
-                    //JSONArray newTempARr = routes.GetJSONArray("legs");
-                    //JSONObject newDisTimeOb = newTempARr.GetJSONObject(0);
-
-                    //JSONObject distOb = newDisTimeOb.GetJSONObject("distance");
-                    //JSONObject timeOb = newDisTimeOb.GetJSONObject("duration");
+                    string distanciaText = JSONObject["routes"][0]["legs"][0]["distance"]["text"].ToString();
+                    string tiempoText = JSONObject["routes"][0]["legs"][0]["duration"]["text"].ToString();
+                    string distancia = JSONObject["routes"][0]["legs"][0]["distance"]["value"].ToString();
+                    string tiempo = JSONObject["routes"][0]["legs"][0]["duration"]["value"].ToString();
+                    string direccionVehiculo = JSONObject["routes"][0]["legs"][0]["end_address"].ToString();
+                    string direccionPropia = JSONObject["routes"][0]["legs"][0]["start_address"].ToString();
 
                     informacionVehiculo.distance = Int32.Parse(distancia);
                     informacionVehiculo.time = Int32.Parse(tiempo);
+                    informacionVehiculo.distanceText = distanciaText;
+                    informacionVehiculo.timeText = tiempoText;
                     informacionVehiculo.adressSlowVehicule = direccionVehiculo;
                     informacionVehiculo.adressMyVehicule = direccionPropia;
-
-                    return informacionVehiculo;
                 }
             }
+            
             return informacionVehiculo;
+        }
+
+        /// <summary>
+        /// Funcion que devuelve la configuracion de alertas si no hay devuelve todas a true
+        /// </summary>
+        /// <returns>Configuracion alertas</returns>
+        protected Settings retrieveSettings()
+        {
+            if (Application.Current.Properties.ContainsKey("sonido") && Application.Current.Properties.ContainsKey("imagen") && Application.Current.Properties.ContainsKey("color"))
+            {
+                bool sonido = (bool) Application.Current.Properties["sonido"];
+                bool imagen = (bool) Application.Current.Properties["imagen"];
+                bool color = (bool) Application.Current.Properties["color"];
+
+                return new Settings(sonido, imagen, color);
+            }
+            return new Settings();
+        }
+
+        public void Alertar()
+        {
+
+            Settings settings = retrieveSettings();
+
+            if (settings.imagen)
+            {
+                imagen.IsVisible = true;
+            }
+            if (settings.sonido)
+            {
+                CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+            }
+            if (settings.color)
+            {
+                //solo version free
+            }
+        }
+
+        public void PararAlertar()
+        {
+            Settings settings = retrieveSettings();
+
+            if (settings.sonido)
+            {
+                CrossMediaManager.Current.Stop();
+            }
+            if (settings.imagen)
+            {
+                imagen.IsVisible = false;
+            }
+            if (settings.color)
+            {
+                //solo version free
+            }
         }
     }
 }
