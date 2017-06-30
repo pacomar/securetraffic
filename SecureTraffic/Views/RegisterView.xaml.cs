@@ -15,7 +15,11 @@ namespace SecureTraffic
 
 			doRegister.Clicked += async(sender, args) =>
 			{
-				await new UserViewModel().RegisterUser(email.Text, password.Text);
+				bool resgisted = await new UserViewModel().RegisterUser(email.Text, password.Text);
+				if (resgisted)
+				{
+					await Navigation.PushAsync(new LoginView(email.Text));
+				}
 			};
 
 			goLogin.Clicked += async(sender, args) =>

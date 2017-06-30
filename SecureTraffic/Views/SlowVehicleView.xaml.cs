@@ -1,5 +1,4 @@
-﻿using Android.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
@@ -10,7 +9,7 @@ namespace SecureTraffic
 	{
 		public SlowVehicleView(Vehicle veh)
 		{
-            var attributesWindow = new WindowManagerLayoutParams();
+            //var attributesWindow = new WindowManagerLayoutParams();
 
 			InitializeComponent();
 

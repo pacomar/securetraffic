@@ -10,7 +10,7 @@ namespace SecureTraffic
 		{
 			InitializeComponent();
 
-			MainPage = new NavigationPage(new FastVehicleView());
+			MainPage = new NavigationPage(new LoginView());
 		}
 
 		protected override void OnStart()
