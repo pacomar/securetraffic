@@ -13,7 +13,7 @@ namespace SecureTraffic
 
             ToolbarItems.Add(new ToolbarItem("Settings", "settings.png", () =>
             {
-                new SettingsView();
+                LanzarPantallaSettings();
             }));
 
             BindingContext = new FastVehicleViewModel(MyMap, ImageAlert);
@@ -48,8 +48,13 @@ namespace SecureTraffic
 
         public void OnTapGestureRecognizerTappedAlert(object sender, EventArgs args)
         {
-            Image imagen = (Image) sender;
+            Image imagen = (Image)sender;
             imagen.IsVisible = false;
         }
+
+        public void LanzarPantallaSettings()
+        {
+            new SettingsView();
+        } 
     }
 }

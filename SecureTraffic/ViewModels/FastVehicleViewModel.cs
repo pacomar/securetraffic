@@ -11,6 +11,7 @@ using System.Net;
 using System.IO;
 using Xamarin.Forms;
 using Plugin.MediaManager;
+using System.Linq;
 
 namespace SecureTraffic
 {
@@ -99,7 +100,9 @@ namespace SecureTraffic
                 };
                 this._map.Pins.Add(pin);
 
-                if (infoVehicle.adressSlowVehicule == infoVehicle.adressMyVehicule && infoVehicle.distance < alertDistance)
+                bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle);
+
+                if (lanzaraviso)
                 {
                     alertar = true;
                     Alertar();
@@ -112,6 +115,27 @@ namespace SecureTraffic
 			CenterMap();
 
             return true;
+        }
+
+        public bool ComprobarDistanciaYCarretera(InfoCloseVehicule infoVehicle)
+        {
+            if (infoVehicle.distance < alertDistance)
+            {
+                List<string> listacarreteras = ListaCarreteras();
+                bool esunacarretera = listacarreteras.Any(x => !infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
+                bool esdeunicosentido = false;
+
+                if (infoVehicle.adressSlowVehicule.Split(',')[0] == infoVehicle.adressMyVehicule.Split(',')[0] && esunacarretera)
+                    {
+                        return true;
+                    }
+            }
+            return false;
+        }
+
+        public List<string> ListaCarreteras()
+        {
+            return new List<string>() { "alameda", "calle", "c/", "camino", "glorieta", "kalea", "pasaje", "paseo", "pº", "plaça", "plaza", "plza", "pza", "rambla", "ronda", "rua", "rúa", "sector", "av.", "calle", "travesía", "travesia", "urbanizacion", "urbanización", "avenida", "avda", "avinguda", "barrio", "bº", "calleja", "cami", "camí", "carrera", "cuesta", "edificio", "enparantza", "estrada", "jardines", "jardins", "parque", "passeig", "praza", "plazuela", "placeta", "poblado", "pbdo", "pd.", "travessera", "avinguda", "passatge", "bulevar", "ps.", "poligono", "polígono", "otros" };
         }
 
         /// <summary>
