@@ -21,7 +21,7 @@
                     MapType="Street"
                 />
 
-                <Image Source="prueba.jpg" BackgroundColor="Transparent" AbsoluteLayout.LayoutBounds="0.5,0.5,0.5,0.5" AbsoluteLayout.LayoutFlags="All" IsVisible="False" x:Name="ImageAlert">
+                <Image Source="alerta.png" BackgroundColor="Transparent" AbsoluteLayout.LayoutBounds="0.5,0.5,0.5,0.5" AbsoluteLayout.LayoutFlags="All" IsVisible="False" x:Name="ImageAlert">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTappedAlert"/>
@@ -59,6 +59,13 @@
                 </Image>
 
                 <Image ClassId="3" Source="prueba.jpg" Grid.Row="0" Grid.Column="3" BackgroundColor="White">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnTapGestureRecognizerTapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Image ClassId="4" Source="prueba.jpg" Grid.Row="0" Grid.Column="4" BackgroundColor="White">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTapped"/>

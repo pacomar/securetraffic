@@ -10,9 +10,7 @@ namespace SecureTraffic
 	{
 		public SettingsView()
 		{
-            var attributesWindow = new WindowManagerLayoutParams();
-
-			InitializeComponent();
+            InitializeComponent();
 
 			this.Title = "Configuración";
             

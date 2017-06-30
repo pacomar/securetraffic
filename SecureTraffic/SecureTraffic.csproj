@@ -35,9 +35,6 @@
     <EmbeddedResource Include="Views\FastVehicleView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\SelectSlowVehicleView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -63,9 +60,6 @@
     <Compile Include="ViewModels\FastVehicleViewModel.cs" />
     <Compile Include="Models\MyPosition.cs" />
     <Compile Include="Models\Vehicle.cs" />
-    <Compile Include="Views\SelectSlowVehicleView.xaml.cs">
-      <DependentUpon>SelectSlowVehicleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helper\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
