@@ -8,6 +8,8 @@ namespace SecureTraffic
 		{
 			InitializeComponent();
 
+			Navigation.PushAsync(new RegisterView());
+
             this.Title = "Secure Traffic";
 
 			BindingContext = new MainViewModel();

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="SecureTraffic.LoginView">
+	<ContentPage.Content>
+	    <StackLayout Spacing="10" x:Name="layout">
+			<Entry Placeholder="email" />
+			<Entry IsPassword="true" Placeholder="Password" />
+			<Button Text="Login" x:Name="doLogin"/>
+			<Button Text="Go to Register" x:Name="goRegister"/>
+		</StackLayout>
+    </ContentPage.Content>
+</ContentPage>
