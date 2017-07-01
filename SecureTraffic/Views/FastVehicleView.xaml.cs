@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Geolocator;
+using System;
 using Xamarin.Forms;
 
 namespace SecureTraffic
@@ -15,6 +16,10 @@ namespace SecureTraffic
             {
                 LanzarPantallaSettings();
             }));
+
+            var locator = CrossGeolocator.Current;
+
+            if (locator.IsGeolocationAvailable && locator.IsGeolocationEnabled) DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");
 
             BindingContext = new FastVehicleViewModel(MyMap, ImageAlert);
         }

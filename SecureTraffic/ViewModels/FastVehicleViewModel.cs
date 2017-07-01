@@ -50,7 +50,7 @@ namespace SecureTraffic
                 var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
                 if (position == null)
                     return res;
-
+                
                 try { myLastPosition = myPosition; } catch { }
                 myPosition = new Position(position.Latitude, position.Longitude);
 
