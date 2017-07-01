@@ -17,9 +17,27 @@ namespace SecureTraffic
 
 		public async Task<string> SetPositionVehicle(MyPosition position)
 		{
+			var vehicle = await firebase
+				.Child("Vehicle")
+				.Child(App.token)
+				.OnceSingleAsync<MyVehicle>();
+
+			if (vehicle != null)
+			{
+				MyPosition aux = vehicle.CurrentPosition;
+				vehicle.Time = position.Time;
+				vehicle.CurrentPosition = position;
+				vehicle.LastPosition = aux;
+			}
+			else
+			{
+				vehicle.CurrentPosition = position;
+				vehicle.Time = position.Time;
+			}
+			
 			var item = await firebase
-				.Child("Position")
-				.PostAsync(position);
+				.Child("Vehicle")
+				.PostAsync(vehicle);
 
 			return item.Key;
 		}
@@ -27,18 +45,15 @@ namespace SecureTraffic
 		public async Task<IEnumerable<FirebaseObject<MyPosition>>> GetVehicles()
 		{
 			var items = await firebase
-				.Child("Position")
-				//.OrderBy("Time")
-				//.LimitToLast(50)
+				.Child("Vehicle")
+				.OrderBy("Time")
+				.LimitToLast(50)
 				.OnceAsync<MyPosition>();
 
-			var aux1 = items.GroupBy(pos => pos.Object.Token);
-			var aux2 = aux1.Select(pos => pos.OrderByDescending(posAux => posAux.Object.Time));
-			var aux3 = aux2.Select(pos => pos.FirstOrDefault());
 			int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
-			var aux4 = aux3.Where(pos => (timestamp - long.Parse(pos.Object.Time)) < 300);
+			var aux = items.Where(veh => (timestamp - long.Parse(veh.Object.Time)) < 300);
 
-			return aux4;
+			return aux;
 		}
 	}
 }

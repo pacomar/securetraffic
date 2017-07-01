@@ -1,21 +1,46 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Firebase.Xamarin.Auth;
+using SecureTraffic.Helpers;
 
 namespace SecureTraffic
 {
 	public class UserViewModel
 	{
+		private UserService _userService;
 		public UserViewModel()
 		{
+			this._userService = new UserService();
 		}
 
 		public async Task<bool> RegisterUser(string email, string password)
 		{
-			UserService _userServ = new UserService();
+			FirebaseAuthLink auth = await this._userService.RegisterUser(email, password);
 
-			string token = await _userServ.RegisterUser(email, password);
+			return auth != null;
+		}
 
-			return token != "";
+		public async Task<bool> ResgisterWithGoogle()
+		{
+			FirebaseAuthLink auth = await this._userService.RegisteGoogleUser();
+
+			return auth != null;
+		}
+
+		public async Task<bool> LoginUser(string email, string password)
+		{
+			bool res = false;
+
+			FirebaseAuthLink auth = await this._userService.LoginUser(email, password);
+
+			if (auth != null)
+			{
+				App.token = auth.FirebaseToken;
+				Settings.Token = App.token;
+				res = true;
+			}
+
+			return res;
 		}
 	}
 }

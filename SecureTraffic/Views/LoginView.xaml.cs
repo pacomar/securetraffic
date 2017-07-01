@@ -17,7 +17,21 @@ namespace SecureTraffic
 		
 			GoRegister.Clicked += async(sender, args) =>
 			{
-				await Navigation.PushAsync(new RegisterView());
+				await Navigation.PushModalAsync(new NavigationPage(new RegisterView()));
+			};
+
+			DoLogin.Clicked += async(sender, args) =>
+			{
+				bool resgisted = await new UserViewModel().LoginUser(email.Text, password.Text);
+				if (resgisted)
+				{
+					await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
+				}
+				else
+				{
+                    await DisplayAlert("Alert", "Tus datos no son correctos", "OK");
+					password.Text = "";
+				}
 			};
 		}
 	}

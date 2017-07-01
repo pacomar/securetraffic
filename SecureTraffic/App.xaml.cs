@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using SecureTraffic.Helpers;
+using Xamarin.Forms;
 
 namespace SecureTraffic
 {
@@ -9,8 +10,15 @@ namespace SecureTraffic
 		public App()
 		{
 			InitializeComponent();
-
-			MainPage = new NavigationPage(new LoginView());
+			if (Settings.Token != "")
+			{
+				token = Settings.Token;
+				MainPage = new NavigationPage(new FastVehicleView());
+			}
+			else
+			{
+				MainPage = new NavigationPage(new LoginView());	
+			}
 		}
 
 		protected override void OnStart()

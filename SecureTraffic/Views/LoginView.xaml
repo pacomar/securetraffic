@@ -7,7 +7,7 @@
 	    <StackLayout Spacing="10" x:Name="layout">
 			<Entry Placeholder="email" x:Name="email"/>
 			<Entry IsPassword="true" Placeholder="Password" x:Name="password"/>
-			<Button Text="Login" x:Name="doLogin"/>
+			<Button Text="Login" x:Name="DoLogin"/>
 			<Button Text="Go to Register" x:Name="GoRegister"/>
 		</StackLayout>
     </ContentPage.Content>

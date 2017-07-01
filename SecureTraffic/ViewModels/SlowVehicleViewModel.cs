@@ -99,8 +99,7 @@ namespace SecureTraffic
 						Coordinate = new Coordinate(e.Position.Latitude, e.Position.Longitude),
 						Speed = e.Position.Speed,
 						Vehicle = _vehicle,
-						Time = Helper.ConvertToTimestamp(DateTime.Now).ToString(),
-						Token = App.token
+						Time = Helper.ConvertToTimestamp(DateTime.Now).ToString()
 					};
 					await _vehServ.SetPositionVehicle(aux);
 

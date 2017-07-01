@@ -26,12 +26,6 @@ namespace SecureTraffic
         public FastVehicleViewModel(Map _map,Image imagen)
         {
             string rnd = new Random().Next(int.MinValue, int.MaxValue).ToString();
-            var tokenGenerator = new Firebase.Xamarin.Token.TokenGenerator("zHGOXaynKRyC7QZqe1GWp30ZhWmhRP4qtnEorl3D");
-            var authPayload = new Dictionary<string, object>()
-            {
-                {"uid", rnd.ToString()}
-            };
-            App.token = tokenGenerator.CreateToken(authPayload);
 
             this._map = _map;
             this.imagen = imagen;
