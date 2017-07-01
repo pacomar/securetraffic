@@ -7,7 +7,6 @@ namespace SecureTraffic
 		private double _speed;
 		private Vehicle _vehicle;
 		private string _time;
-		private string _token;
 		public MyPosition()
 		{
 		}
@@ -34,12 +33,6 @@ namespace SecureTraffic
 		{
 			get { return this._time; }
 			set { this._time = value; }
-		}
-
-		public string Token
-		{
-			get { return this._token; }
-			set { this._token = value; }
 		}
 	}
 }

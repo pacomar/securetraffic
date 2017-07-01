@@ -18,13 +18,19 @@ namespace SecureTraffic
 				bool resgisted = await new UserViewModel().RegisterUser(email.Text, password.Text);
 				if (resgisted)
 				{
-					await Navigation.PushAsync(new LoginView(email.Text));
+					await Navigation.PushModalAsync(new NavigationPage(new LoginView(email.Text)));
+				}
+				else
+				{
+					await DisplayAlert("Alert", "Los datos son ivalidos", "OK");
+					email.Text = "";
+					password.Text = "";
 				}
 			};
 
 			goLogin.Clicked += async(sender, args) =>
 			{
-				await Navigation.PushAsync(new LoginView());
+				await Navigation.PushModalAsync(new NavigationPage(new LoginView()));
 			};
 		}
 	}
