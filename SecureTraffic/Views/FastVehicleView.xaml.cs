@@ -54,7 +54,7 @@ namespace SecureTraffic
 
         public void LanzarPantallaSettings()
         {
-            new SettingsView();
+            new NavigationPage(new SettingsView());
         } 
     }
 }

@@ -7,7 +7,7 @@ namespace SecureTraffic
     {
         public SettingsViewModel()
         {
-
+            
         }
 
         /// <summary>

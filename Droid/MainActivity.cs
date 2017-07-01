@@ -7,6 +7,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Locations;
+using Xamarin.Forms;
 
 namespace SecureTraffic.Droid
 {
@@ -22,7 +24,26 @@ namespace SecureTraffic.Droid
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 
-			LoadApplication(new App());
+            //LocationManager locationManager = (LocationManager)Forms.Context.GetSystemService(Context.LocationService);
+
+            //if (locationManager.IsProviderEnabled(LocationManager.GpsProvider) == false)
+            //{
+            //    Intent gpsSettingIntent = new Intent(Settings.ActionLocationSourceSettings);
+            //    Forms.Context.StartActivity(gpsSettingIntent);
+            //}
+
+            //IOS
+            //if (CLLocationManager.Status == CLAuthorizationStatus.Denied)
+            //{
+            //    if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+            //    {
+            //        NSString settingsString = UIApplication.OpenSettingsUrlString;
+            //        NSUrl url = new NSUrl(settingsString);
+            //        UIApplication.SharedApplication.OpenUrl(url);
+            //    }
+            //}
+
+            LoadApplication(new App());
 		}
 
 		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)

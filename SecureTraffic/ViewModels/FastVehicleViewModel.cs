@@ -19,6 +19,7 @@ namespace SecureTraffic
     {
         private Map _map { get; set; }
         private Position myPosition;
+        private Position myLastPosition;
         private int alertDistance = 500;
         private int distancePosibleAlert = 1000;
         private Image imagen { get; set; }
@@ -56,6 +57,7 @@ namespace SecureTraffic
                 if (position == null)
                     return res;
 
+                try { myLastPosition = myPosition; } catch { }
                 myPosition = new Position(position.Latitude, position.Longitude);
 
                 this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
@@ -100,7 +102,7 @@ namespace SecureTraffic
                 };
                 this._map.Pins.Add(pin);
 
-                bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle);
+                bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude,myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.Coordinate, vehicle.Object.Coordinate);
 
                 if (lanzaraviso)
                 {
@@ -117,25 +119,68 @@ namespace SecureTraffic
             return true;
         }
 
-        public bool ComprobarDistanciaYCarretera(InfoCloseVehicule infoVehicle)
+        public bool ComprobarDistanciaYCarretera(InfoCloseVehicule infoVehicle, Coordinate x1, Coordinate x2, Coordinate y1, Coordinate y2)
         {
             if (infoVehicle.distance < alertDistance)
             {
-                List<string> listacarreteras = ListaCarreteras();
-                bool esunacarretera = listacarreteras.Any(x => !infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
-                bool esdeunicosentido = false;
+                List<string> listacalles= ListaCalles();
+                List<string> listacontrolarsentidoautopistas= ListaAutopistas();
+                bool esunacarretera = listacalles.Any(x => !infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
+                bool esdeunicosentido = listacontrolarsentidoautopistas.Any(x => infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
 
                 if (infoVehicle.adressSlowVehicule.Split(',')[0] == infoVehicle.adressMyVehicule.Split(',')[0] && esunacarretera)
                     {
-                        return true;
+                    if (esdeunicosentido)
+                    {
+                        if (EsMismoSentido(x1, x2, y1, y2)) return true;
+                    }
+                    else return true;
                     }
             }
             return false;
         }
 
-        public List<string> ListaCarreteras()
+        public List<string> ListaCalles()
         {
             return new List<string>() { "alameda", "calle", "c/", "camino", "glorieta", "kalea", "pasaje", "paseo", "pº", "plaça", "plaza", "plza", "pza", "rambla", "ronda", "rua", "rúa", "sector", "av.", "calle", "travesía", "travesia", "urbanizacion", "urbanización", "avenida", "avda", "avinguda", "barrio", "bº", "calleja", "cami", "camí", "carrera", "cuesta", "edificio", "enparantza", "estrada", "jardines", "jardins", "parque", "passeig", "praza", "plazuela", "placeta", "poblado", "pbdo", "pd.", "travessera", "avinguda", "passatge", "bulevar", "ps.", "poligono", "polígono", "otros" };
+        }
+
+        public List<string> ListaAutopistas()
+        {
+            return new List<string>() { "a-", "r-", "ap-", "autopista", "autovia", "autovía", "peaje", "acceso" };
+        }
+
+        public bool EsMismoSentido(Coordinate x1, Coordinate x2, Coordinate y1, Coordinate y2)
+        {
+            Sentidos sentidolatitudx = Sentidos.Incierto;
+            Sentidos sentidolongitudx = Sentidos.Incierto;
+            Sentidos sentidolatitudy = Sentidos.Incierto;
+            Sentidos sentidolongitudy = Sentidos.Incierto;
+
+            sentidolatitudx = CalcularSentidoLatitud(x1.Latitude, x2.Latitude);
+            sentidolongitudx = CalcularSentidoLongitud(x1.Longitude, x2.Longitude);
+            sentidolatitudy = CalcularSentidoLatitud(y1.Latitude, y2.Latitude);
+            sentidolongitudy = CalcularSentidoLongitud(y1.Longitude, y2.Longitude);
+
+            if (sentidolatitudx == sentidolatitudy || sentidolongitudx == sentidolongitudy) return true;
+
+            return false;
+        }
+
+        public Sentidos CalcularSentidoLongitud(double cordenada1, double cordenada2)
+        {
+            if (cordenada1 > cordenada2) return Sentidos.Oeste;
+            else if (cordenada1 < cordenada2)  return Sentidos.Este;
+
+            return Sentidos.Incierto;
+        }
+
+        public Sentidos CalcularSentidoLatitud(double cordenada1, double cordenada2)
+        {
+            if (cordenada1 > cordenada2) return Sentidos.Sur;
+            else if (cordenada1 < cordenada2) return Sentidos.Norte;
+
+            return Sentidos.Incierto;
         }
 
         /// <summary>

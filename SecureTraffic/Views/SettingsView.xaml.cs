@@ -14,7 +14,11 @@ namespace SecureTraffic
 			this.Title = "Configuración";
             
             BindingContext = new SettingsViewModel();
-		}
+        }
 
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+
+        }
     }
 }
