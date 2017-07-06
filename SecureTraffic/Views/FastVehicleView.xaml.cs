@@ -19,7 +19,7 @@ namespace SecureTraffic
 
             var locator = CrossGeolocator.Current;
 
-            if (locator.IsGeolocationAvailable && locator.IsGeolocationEnabled) DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");
+            if (!locator.IsGeolocationAvailable && !locator.IsGeolocationEnabled) DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");
 
             BindingContext = new FastVehicleViewModel(MyMap, ImageAlert);
         }
@@ -57,9 +57,9 @@ namespace SecureTraffic
             imagen.IsVisible = false;
         }
 
-        public void LanzarPantallaSettings()
+        public async void LanzarPantallaSettings()
         {
-            new NavigationPage(new SettingsView());
+			await Navigation.PushAsync(new SettingsView());
         } 
     }
 }

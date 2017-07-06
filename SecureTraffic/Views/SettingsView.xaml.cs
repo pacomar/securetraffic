@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using SecureTraffic.Helpers;
 using Xamarin.Forms;
 
 namespace SecureTraffic
@@ -14,6 +14,12 @@ namespace SecureTraffic
 			this.Title = "Configuración";
             
             BindingContext = new SettingsViewModel();
+
+			DoLogout.Clicked += async (sender, e) =>
+			{
+				Settings.Token = "";
+				await Navigation.PushAsync(new LoginView());
+			};
         }
 
         private void Switch_Toggled(object sender, ToggledEventArgs e)
