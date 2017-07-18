@@ -9,6 +9,8 @@
 			<Entry IsPassword="true" Placeholder="Password" x:Name="password"/>
 			<Button Text="Login" x:Name="DoLogin"/>
 			<Button Text="Go to Register" x:Name="GoRegister"/>
+			<Button Text="Login with Google" x:Name="DoLoginGoogle"/>
+			<Button Text="Login with facebook" x:Name="DoLoginFacebook"/>
 		</StackLayout>
     </ContentPage.Content>
 </ContentPage>

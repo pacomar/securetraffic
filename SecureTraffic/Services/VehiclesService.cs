@@ -19,7 +19,8 @@ namespace SecureTraffic
 		{
 			var vehicle = await firebase
 				.Child("Vehicle")
-				.Child(App.token)
+				.Child(App.guid.ToString())
+				//.WithAuth(App.token)
 				.OnceSingleAsync<MyVehicle>();
 
 			if (vehicle != null)
@@ -31,27 +32,32 @@ namespace SecureTraffic
 			}
 			else
 			{
+				vehicle = new MyVehicle();
 				vehicle.CurrentPosition = position;
+				vehicle.LastPosition = null;
 				vehicle.Time = position.Time;
 			}
 			
-			var item = await firebase
+			await firebase
 				.Child("Vehicle")
-				.PostAsync(vehicle);
+				.Child(App.guid.ToString())
+				//.WithAuth(App.token)
+				.PutAsync(vehicle);
 
-			return item.Key;
+			return App.guid.ToString();
 		}
 
-		public async Task<IEnumerable<FirebaseObject<MyPosition>>> GetVehicles()
+		public async Task<IEnumerable<FirebaseObject<MyVehicle>>> GetVehicles()
 		{
 			var items = await firebase
 				.Child("Vehicle")
-				.OrderBy("Time")
-				.LimitToLast(50)
-				.OnceAsync<MyPosition>();
+				//.OrderBy("Time")
+				//.WithAuth(App.token)
+				//.LimitToLast(50)
+				.OnceAsync<MyVehicle>();
 
 			int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
-			var aux = items.Where(veh => (timestamp - long.Parse(veh.Object.Time)) < 300);
+			var aux = items.Where(veh => (timestamp - long.Parse(veh.Object.Time)) < 30000);
 
 			return aux;
 		}

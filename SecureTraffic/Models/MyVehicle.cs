@@ -3,19 +3,12 @@ namespace SecureTraffic
 {
 	public class MyVehicle
 	{
-		private string _token;
 		private MyPosition _currentPosition;
 		private MyPosition _lastPosition;
 		private string _time;
 
 		public MyVehicle()
 		{
-		}
-
-		public string Coordinate
-		{
-			get { return this._token; }
-			set { this._token = value; }
 		}
 
 		public MyPosition CurrentPosition

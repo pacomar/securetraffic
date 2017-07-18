@@ -83,20 +83,20 @@ namespace SecureTraffic
             {
                 InfoCloseVehicule infoVehicle = new InfoCloseVehicule();
 
-				if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude) < distancePosibleAlert)
+				if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude) < distancePosibleAlert)
                 {
-                    infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude);
+					infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude);
                 }
 
                 var pin = new Pin
                 {
                     Type = PinType.Place,
-                    Position = new Position(vehicle.Object.Coordinate.Latitude, vehicle.Object.Coordinate.Longitude),
-                    Label = vehicle.Object.Vehicle.ToString(),
+					Position = new Position(vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude),
+					Label = vehicle.Object.CurrentPosition.Vehicle.ToString(),
                 };
                 this._map.Pins.Add(pin);
 
-                bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude,myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.Coordinate, vehicle.Object.Coordinate);
+				bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude,myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.CurrentPosition.Coordinate, vehicle.Object.CurrentPosition.Coordinate);
 
                 if (lanzaraviso)
                 {

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SecureTraffic.Droid</RootNamespace>
     <AssemblyName>SecureTraffic.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>

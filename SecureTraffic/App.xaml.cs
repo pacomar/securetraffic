@@ -1,4 +1,5 @@
-﻿using SecureTraffic.Helpers;
+﻿using System;
+using SecureTraffic.Helpers;
 using Xamarin.Forms;
 
 namespace SecureTraffic
@@ -6,10 +7,12 @@ namespace SecureTraffic
 	public partial class App : Application
 	{
 		public static string token = "";
+		public static Guid guid;
 
 		public App()
 		{
 			InitializeComponent();
+			guid = Guid.NewGuid();
 			if (Settings.Token != "")
 			{
 				token = Settings.Token;

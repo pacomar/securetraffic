@@ -6,7 +6,7 @@
 	x:Class="SecureTraffic.FastVehicleView">
 	<StackLayout VerticalOptions="FillAndExpand" Padding="0">
 
-        <Grid RowSpacing="0" ColumnSpacing="0">
+        <Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="8*" />
                 <RowDefinition Height="2*" />
