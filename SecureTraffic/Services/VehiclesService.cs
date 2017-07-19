@@ -51,13 +51,13 @@ namespace SecureTraffic
 		{
 			var items = await firebase
 				.Child("Vehicle")
-				//.OrderBy("Time")
 				//.WithAuth(App.token)
-				//.LimitToLast(50)
 				.OnceAsync<MyVehicle>();
 
 			int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
-			var aux = items.Where(veh => (timestamp - long.Parse(veh.Object.Time)) < 30000);
+			var aux = items.Where(veh => (
+				(timestamp - long.Parse(veh.Object.Time)) < 300) &&
+              	veh.Key != App.guid.ToString());
 
 			return aux;
 		}

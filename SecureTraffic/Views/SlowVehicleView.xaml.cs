@@ -15,7 +15,7 @@ namespace SecureTraffic
 
 			this.Title = "Vehículo lento: " + veh;
 
-			BindingContext = new SlowVehicleViewModel(veh);
+			BindingContext = new SlowVehicleViewModel(veh, MyMap);
 		}
 
     }

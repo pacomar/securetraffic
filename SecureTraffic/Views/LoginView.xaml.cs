@@ -36,6 +36,38 @@ namespace SecureTraffic
 					password.Text = "";
 				}
 			};
+
+			DoLoginGoogle.Clicked += async(sender, args) =>
+			{
+				//Loadding.IsRunning = true;
+				bool resgisted = await new UserViewModel().LoginUserGoogle();
+				if (resgisted)
+				{
+					//Loadding.IsRunning = false;
+					await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
+				}
+				else
+				{
+					//Loadding.IsRunning = false;
+                    await DisplayAlert("Alert", "Error al iniciar sesión", "OK");	password.Text = "";
+				}
+			};
+
+			DoLoginFacebook.Clicked += async(sender, args) =>
+			{
+				//Loadding.IsRunning = true;
+				bool resgisted = await new UserViewModel().LoginUserFacebook();
+				if (resgisted)
+				{
+					//Loadding.IsRunning = false;
+					await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
+				}
+				else
+				{
+					//Loadding.IsRunning = false;
+                    await DisplayAlert("Alert", "Error al iniciar sesión", "OK"); password.Text = "";
+				}
+			};
 		}
 	}
 }

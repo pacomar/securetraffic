@@ -2,31 +2,36 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
 	x:Class="SecureTraffic.SlowVehicleView">
-	<Grid>
-	  <Grid.ColumnDefinitions>
-	    <ColumnDefinition Width="*" />
-	    <ColumnDefinition Width="*" />
-	  </Grid.ColumnDefinitions>
-		<Label Text="Position: " HorizontalTextAlignment="End" Grid.Row="0" Grid.Column="0" />
-		<Label Text="{Binding Position}" Grid.Row="0" Grid.Column="1" />
-		
-		<Label Text="Time: " HorizontalTextAlignment="End" Grid.Row="1" Grid.Column="0" />
-		<Label Text="{Binding Time}" Grid.Row="1" Grid.Column="1" />
-		
-		<Label Text="Heading: " HorizontalTextAlignment="End" Grid.Row="2" Grid.Column="0" />
-		<Label Text="{Binding Heading}" Grid.Row="2" Grid.Column="1" />
-		
-		<Label Text="Speed: " HorizontalTextAlignment="End" Grid.Row="3" Grid.Column="0" />
-		<Label Text="{Binding Speed}" Grid.Row="3" Grid.Column="1" />
-		
-		<Label Text="Accuracy: " HorizontalTextAlignment="End" Grid.Row="4" Grid.Column="0" />
-		<Label Text="{Binding Accuracy}" Grid.Row="4" Grid.Column="1" />
-		
-		<Label Text="Altitude: " HorizontalTextAlignment="End" Grid.Row="5" Grid.Column="0" />
-		<Label Text="{Binding Altitude}" Grid.Row="5" Grid.Column="1" />
-		
-		<Label Text="Altitude Accuracy: " HorizontalTextAlignment="End" Grid.Row="6" Grid.Column="0" />
-		<Label Text="{Binding Altitude}" Grid.Row="6" Grid.Column="1" />
-	</Grid>
+	<StackLayout VerticalOptions="FillAndExpand" Padding="0">
+
+        <Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+
+            <AbsoluteLayout Grid.Row="0" Grid.Column="0">
+                <maps:Map AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="All"
+			        VerticalOptions="FillAndExpand"
+			        HorizontalOptions="FillAndExpand"
+                    x:Name="MyMap"
+                    IsShowingUser="true"
+                    MapType="Street"
+                />
+
+            </AbsoluteLayout>
+            <Grid Grid.Row="1" Grid.Column="0" RowSpacing="0" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Text="Transmitiendo" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="0" />
+            </Grid>
+        </Grid>
+    </StackLayout>
 </ContentPage>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Plugin.Geolocator;
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 
 namespace SecureTraffic
 {
@@ -18,10 +19,12 @@ namespace SecureTraffic
 		private string _altitude;
 		private string _altitudeAccuracy;
 		private Vehicle _vehicle;
+		private Map _map { get; set; }
 
-		public SlowVehicleViewModel(Vehicle veh)
+		public SlowVehicleViewModel(Vehicle veh, Map map)
 		{
 			_vehicle = veh;
+			_map = map;
 			StartListening();
 		}
 
@@ -101,6 +104,7 @@ namespace SecureTraffic
 						Vehicle = _vehicle,
 						Time = Helper.ConvertToTimestamp(DateTime.Now).ToString()
 					};
+                    this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
 					await _vehServ.SetPositionVehicle(aux);
 
 

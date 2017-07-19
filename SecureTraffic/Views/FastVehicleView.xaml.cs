@@ -12,10 +12,10 @@ namespace SecureTraffic
 
 			this.Title = "SecurTraffic";
 
-            ToolbarItems.Add(new ToolbarItem("Settings", "settings.png", () =>
-            {
-                LanzarPantallaSettings();
-            }));
+			ToolbarItems.Add(new ToolbarItem(){
+				Text = "Settings",
+				Command = new Command(() => LanzarPantallaSettings() )
+            });
 
             var locator = CrossGeolocator.Current;
 

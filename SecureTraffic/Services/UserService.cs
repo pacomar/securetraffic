@@ -54,5 +54,33 @@ namespace SecureTraffic
 			}
 			return auth;
 		}
+
+		public async Task<FirebaseAuthLink> LoginUserGoogle()
+		{
+			FirebaseAuthLink auth = null;
+			try
+			{
+				auth = await this._authProvider.SignInAnonymouslyAsync();
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("Error al loguear a un usuario: " + ex.Message);
+			}
+			return auth;
+		}
+
+		public async Task<FirebaseAuthLink> LoginUserFacebook()
+		{
+			FirebaseAuthLink auth = null;
+			try
+			{
+				auth = await this._authProvider.SignInAnonymouslyAsync();
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("Error al loguear a un usuario: " + ex.Message);
+			}
+			return auth;
+		}
 	}
 }

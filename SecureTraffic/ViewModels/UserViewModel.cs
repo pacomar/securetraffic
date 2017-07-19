@@ -42,5 +42,37 @@ namespace SecureTraffic
 
 			return res;
 		}
+
+		public async Task<bool> LoginUserGoogle()
+		{
+			bool res = false;
+
+			FirebaseAuthLink auth = await this._userService.LoginUserGoogle();
+
+			if (auth != null)
+			{
+				App.token = auth.FirebaseToken;
+				Settings.Token = App.token;
+				res = true;
+			}
+
+			return res;
+		}
+
+		public async Task<bool> LoginUserFacebook()
+		{
+			bool res = false;
+
+			FirebaseAuthLink auth = await this._userService.LoginUserFacebook();
+
+			if (auth != null)
+			{
+				App.token = auth.FirebaseToken;
+				Settings.Token = App.token;
+				res = true;
+			}
+
+			return res;
+		}
 	}
 }
