@@ -7,13 +7,11 @@ namespace SecureTraffic
 {
 	public partial class LoginView : ContentPage
 	{
-		public LoginView(string emailPlace = "")
+		public LoginView()
 		{
 			InitializeComponent();
 
             this.Title = "Login";
-
-			email.Text = emailPlace;
 		
 			GoRegister.Clicked += async(sender, args) =>
 			{

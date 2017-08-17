@@ -4,13 +4,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	x:Class="SecureTraffic.LoginView">
 	<ContentPage.Content>
-	    <StackLayout Spacing="10" x:Name="layout">
+	    <StackLayout Spacing="10" x:Name="layout" Padding="50">
 			<Entry Placeholder="email" x:Name="email"/>
 			<Entry IsPassword="true" Placeholder="Password" x:Name="password"/>
-			<Button Text="Login" x:Name="DoLogin"/>
-			<Button Text="Go to Register" x:Name="GoRegister"/>
-			<Button Text="Login with Google" x:Name="DoLoginGoogle"/>
-			<Button Text="Login with facebook" x:Name="DoLoginFacebook"/>
+			<Button Text="Login" x:Name="DoLogin" BackgroundColor="#fe8627" TextColor="White"/>
+			<Button Text="Register" x:Name="GoRegister" BackgroundColor="#fe8627" TextColor="White"/>
+			<Button Text="Google" x:Name="DoLoginGoogle" BackgroundColor="#cf4332" TextColor="White"/>
+			<Button Text="facebook" x:Name="DoLoginFacebook" BackgroundColor="#3c66c4" TextColor="White"/>
 		</StackLayout>
     </ContentPage.Content>
 </ContentPage>

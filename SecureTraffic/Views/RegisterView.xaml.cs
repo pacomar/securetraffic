@@ -18,7 +18,7 @@ namespace SecureTraffic
 				bool resgisted = await new UserViewModel().RegisterUser(email.Text, password.Text);
 				if (resgisted)
 				{
-					await Navigation.PushModalAsync(new NavigationPage(new LoginView(email.Text)));
+					await Navigation.PushModalAsync(new NavigationPage(new LoginView()));
 				}
 				else
 				{
