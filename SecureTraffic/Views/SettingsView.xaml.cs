@@ -17,7 +17,7 @@ namespace SecureTraffic
 			DoLogout.Clicked += async (sender, e) =>
 			{
 				Settings.Token = "";
-				await Navigation.PushAsync(new LoginView());
+				await Navigation.PushModalAsync(new LoginView());
 			};
 
             SettingsModel settingsalertas = retrieveSettings();
