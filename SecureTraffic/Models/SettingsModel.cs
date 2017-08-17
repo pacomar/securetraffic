@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SecureTraffic.Models
 {
-    public class Settings
+    public class SettingsModel
     {
         public bool sonido { get; set; } = true;
 
@@ -14,14 +14,14 @@ namespace SecureTraffic.Models
 
         public bool color { get; set; } = true;
 
-        public Settings(bool sonido, bool imagen, bool color)
+        public SettingsModel(bool sonido, bool imagen, bool color)
         {
             this.sonido = sonido;
             this.imagen = imagen;
             this.color = color;
         }
 
-        public Settings()
+        public SettingsModel()
         {
             this.sonido = true;
             this.imagen = true;

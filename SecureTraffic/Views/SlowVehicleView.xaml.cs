@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SecureTraffic.Messages;
+using System;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
@@ -13,10 +14,26 @@ namespace SecureTraffic
 
 			InitializeComponent();
 
-			this.Title = "Vehículo lento: " + veh;
+			this.Title = "Emitiendo posición: " + veh;
 
-			BindingContext = new SlowVehicleViewModel(veh, MyMap);
+            var message = new StartLongRunningTaskMessage();
+            MessagingCenter.Send(message, "StartLongRunningTaskMessage");
+
+            BindingContext = new SlowVehicleViewModel(veh, MyMap);
 		}
+        void HandleReceivedMessages()
+        {
+            MessagingCenter.Subscribe<TickedMessage>(this, "TickedMessage", message => {
+                Device.BeginInvokeOnMainThread(() => {
+                    //ticker.Text = message.Message;
+                });
+            });
 
+            MessagingCenter.Subscribe<CancelledMessage>(this, "CancelledMessage", message => {
+                Device.BeginInvokeOnMainThread(() => {
+                    //ticker.Text = "Cancelado";
+                });
+            });
+        }
     }
 }

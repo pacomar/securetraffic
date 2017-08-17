@@ -5,7 +5,23 @@
 	x:Class="SecureTraffic.SettingsView">
 	<ContentPage.Content>
 	    <StackLayout Spacing="10" x:Name="layout">
-	  		<Button Text="Logout" x:Name="DoLogout"/>
+            
+            <Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
+
+                <Label Grid.Row="0" Grid.Column="0" Text="Alerta por sonido" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Switch Grid.Row="0" Grid.Column="1" x:Name="SwitchSonido" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledSonido"></Switch>
+
+                <Label Grid.Row="1" Grid.Column="0" Text="Alerta por imagen" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Switch Grid.Row="1" Grid.Column="1" x:Name="SwitchImagen" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledImagen"></Switch>
+
+                <Label Grid.Row="2" Grid.Column="0" Text="Alerta por color" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Switch Grid.Row="2" Grid.Column="1" x:Name="SwitchColor" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledColor"></Switch>
+
+                <Label Grid.Row="3" Grid.Column="0" Text="Olvidar el usuario" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Button Grid.Row="3" Grid.Column="1"  Text="Logout" x:Name="DoLogout" Margin="40" />
+                
+            </Grid>
+            
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

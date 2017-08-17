@@ -13,7 +13,7 @@ namespace SecureTraffic
 			this.Title = "SecurTraffic";
 
 			ToolbarItems.Add(new ToolbarItem(){
-				Text = "Settings",
+				Text = "Ajustes",
 				Command = new Command(() => LanzarPantallaSettings() )
             });
 

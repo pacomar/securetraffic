@@ -58,6 +58,12 @@ namespace SecureTraffic
 
                 res = true;
 
+                //detectar si vamos a menos de 60 para avisar como vehiculo lento
+                if (position.Speed < 16.667)
+                {
+                    AvisarSoyLento(position);
+                }
+
                 UpdateMarkers();
             }
             catch (Exception ex)
@@ -66,6 +72,22 @@ namespace SecureTraffic
             }
 
             return res;
+        }
+
+        public async void AvisarSoyLento(Plugin.Geolocator.Abstractions.Position position)
+        {
+            VehiclesService _vehServ = new VehiclesService();
+
+            //TODO map e to My position
+            MyPosition aux = new MyPosition()
+            {
+                Coordinate = new Coordinate(position.Latitude, position.Longitude),
+                Speed = position.Speed,
+                Vehicle = Vehicle.Otro,
+                Time = Helper.ConvertToTimestamp(DateTime.Now).ToString()
+            };
+            this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
+            await _vehServ.SetPositionVehicle(aux);
         }
 
         /// <summary>
@@ -96,7 +118,7 @@ namespace SecureTraffic
                 };
                 this._map.Pins.Add(pin);
 
-				bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude,myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.CurrentPosition.Coordinate, vehicle.Object.CurrentPosition.Coordinate);
+				bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude,myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.CurrentPosition.Coordinate, vehicle.Object.LastPosition.Coordinate);
 
                 if (lanzaraviso)
                 {
@@ -247,7 +269,7 @@ namespace SecureTraffic
         /// Funcion que devuelve la configuracion de alertas si no hay devuelve todas a true
         /// </summary>
         /// <returns>Configuracion alertas</returns>
-        protected Settings retrieveSettings()
+        protected SettingsModel retrieveSettings()
         {
             if (Application.Current.Properties.ContainsKey("sonido") && Application.Current.Properties.ContainsKey("imagen") && Application.Current.Properties.ContainsKey("color"))
             {
@@ -255,15 +277,15 @@ namespace SecureTraffic
                 bool imagen = (bool) Application.Current.Properties["imagen"];
                 bool color = (bool) Application.Current.Properties["color"];
 
-                return new Settings(sonido, imagen, color);
+                return new SettingsModel(sonido, imagen, color);
             }
-            return new Settings();
+            return new SettingsModel();
         }
 
         public void Alertar()
         {
 
-            Settings settings = retrieveSettings();
+            SettingsModel settings = retrieveSettings();
 
             if (settings.imagen)
             {
@@ -282,14 +304,14 @@ namespace SecureTraffic
 
         public void PararAlertar()
         {
-            Settings settings = retrieveSettings();
+            SettingsModel settings = retrieveSettings();
 
             if (settings.sonido)
             {
                 CrossMediaManager.Current.Stop();
             }
             if (settings.imagen)
-            {
+            { 
                 imagen.IsVisible = false;
             }
             if (settings.color)

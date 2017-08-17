@@ -8,8 +8,8 @@
 
         <Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
-                <RowDefinition Height="8*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="8.5*" />
+                <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
 
             <AbsoluteLayout Grid.Row="0" Grid.Column="0">
@@ -30,7 +30,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Label Text="Transmitiendo" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="0" />
+                <Label Text="Esta aplicación puede correr en segundo plano, lo que significa que puedes bloquear el teléfono para ahorrar batería" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="0" Margin="15"/>
             </Grid>
         </Grid>
     </StackLayout>

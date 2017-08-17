@@ -13,7 +13,7 @@ namespace SecureTraffic
         /// Funcion que devuelve la configuracion de alertas si no hay devuelve todas a true
         /// </summary>
         /// <returns>Configuracion alertas</returns>
-        protected Settings retrieveSettings()
+        protected SettingsModel retrieveSettings()
         {
             if (Application.Current.Properties.ContainsKey("sonido") && Application.Current.Properties.ContainsKey("imagen") && Application.Current.Properties.ContainsKey("color"))
             {
@@ -21,12 +21,12 @@ namespace SecureTraffic
                 bool imagen = (bool)Application.Current.Properties["imagen"];
                 bool color = (bool)Application.Current.Properties["color"];
 
-                return new Settings(sonido, imagen, color);
+                return new SettingsModel(sonido, imagen, color);
             }
-            return new Settings();
+            return new SettingsModel();
         }
 
-        protected void SaveSettings(Settings settings)
+        protected void SaveSettings(SettingsModel settings)
         {
             Application.Current.Properties.Add("sonido", settings.sonido);
             Application.Current.Properties.Add("imagen", settings.imagen);
