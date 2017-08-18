@@ -96,43 +96,53 @@ namespace SecureTraffic
         /// <returns></returns>
         public async Task<bool> UpdateMarkers()
         {
-            VehiclesService _vehServ = new VehiclesService();
-            var vehicles = await _vehServ.GetVehicles();
-			this._map.Pins.Clear();
-
-            bool alertar = false;
-            foreach (var vehicle in vehicles)
+            try
             {
-                InfoCloseVehicule infoVehicle = new InfoCloseVehicule();
+                VehiclesService _vehServ = new VehiclesService();
+                var vehicles = await _vehServ.GetVehicles();
+                this._map.Pins.Clear();
 
-				if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude) < distancePosibleAlert)
+                bool alertar = false;
+                foreach (var vehicle in vehicles)
                 {
-					infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude);
+                    InfoCloseVehicule infoVehicle = new InfoCloseVehicule();
+
+                    if (CalculateDistanceLine(myPosition.Latitude, myPosition.Longitude, vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude) < distancePosibleAlert)
+                    {
+                        infoVehicle = await this.GetInformationCloseVehicle(myPosition.Latitude, myPosition.Longitude, vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude);
+                    }
+
+                    var pin = new Pin
+                    {
+                        Type = PinType.Place,
+                        Position = new Position(vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude),
+                        Label = vehicle.Object.CurrentPosition.Vehicle.ToString(),
+                    };
+                    this._map.Pins.Add(pin);
+
+                    bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude, myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.CurrentPosition.Coordinate, vehicle.Object.LastPosition.Coordinate);
+
+                    if (lanzaraviso)
+                    {
+                        alertar = true;
+                        Alertar();
+                    }
                 }
 
-                var pin = new Pin
-                {
-                    Type = PinType.Place,
-					Position = new Position(vehicle.Object.CurrentPosition.Coordinate.Latitude, vehicle.Object.CurrentPosition.Coordinate.Longitude),
-					Label = vehicle.Object.CurrentPosition.Vehicle.ToString(),
-                };
-                this._map.Pins.Add(pin);
+                if (!alertar) PararAlertar();
 
-				bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude,myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.CurrentPosition.Coordinate, vehicle.Object.LastPosition.Coordinate);
+                await Task.Delay(5000);
+                CenterMap();
 
-                if (lanzaraviso)
-                {
-                    alertar = true;
-                    Alertar();
-                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                CenterMap();
+                return true;
+                Debug.WriteLine("Excep: " + ex);
             }
             
-            if (!alertar) PararAlertar();
-
-            await Task.Delay(5000);
-			CenterMap();
-
-            return true;
         }
 
         public bool ComprobarDistanciaYCarretera(InfoCloseVehicule infoVehicle, Coordinate x1, Coordinate x2, Coordinate y1, Coordinate y2)
@@ -141,7 +151,7 @@ namespace SecureTraffic
             {
                 List<string> listacalles= ListaCalles();
                 List<string> listacontrolarsentidoautopistas= ListaAutopistas();
-                bool esunacarretera = listacalles.Any(x => !infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
+                bool esunacarretera = !listacalles.Any(x => infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
                 bool esdeunicosentido = listacontrolarsentidoautopistas.Any(x => infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
 
                 if (infoVehicle.adressSlowVehicule.Split(',')[0] == infoVehicle.adressMyVehicule.Split(',')[0] && esunacarretera)
