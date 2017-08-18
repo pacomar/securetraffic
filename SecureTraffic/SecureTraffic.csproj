@@ -48,6 +48,7 @@
     </Compile>
     <Compile Include="Messages\CancellledMessage.cs" />
     <Compile Include="Messages\StartLongRunningTaskMessage.cs" />
+    <Compile Include="Messages\StopLongRunningTaskMessage.cs" />
     <Compile Include="Messages\TicketMessage.cs" />
     <Compile Include="Models\InfoCloseVehicule.cs" />
     <Compile Include="Models\Sentidos.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Models\Coordinate.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\VehiclesService.cs" />
+    <Compile Include="TaskCounter.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>

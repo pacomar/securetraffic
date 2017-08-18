@@ -21,6 +21,13 @@ namespace SecureTraffic
 
             BindingContext = new SlowVehicleViewModel(veh, MyMap);
 		}
+        protected override bool OnBackButtonPressed()
+        {
+            var message = new StartLongRunningTaskMessage();
+            MessagingCenter.Send(message, "StopLongRunningTaskMessage");
+            return base.OnBackButtonPressed();
+        }
+
         void HandleReceivedMessages()
         {
             MessagingCenter.Subscribe<TickedMessage>(this, "TickedMessage", message => {

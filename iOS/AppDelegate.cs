@@ -4,21 +4,44 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using SecureTraffic.iOS.Services;
+using Xamarin.Forms;
+using SecureTraffic.Messages;
 
 namespace SecureTraffic.iOS
 {
-	[Register("AppDelegate")]
-	public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
-	{
-		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
-		{
-			global::Xamarin.Forms.Forms.Init();
+    [Register("AppDelegate")]
+    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        {
+            global::Xamarin.Forms.Forms.Init();
 
-			Xamarin.FormsMaps.Init();
+            Xamarin.FormsMaps.Init();
 
-			LoadApplication(new App());
+            LoadApplication(new App());
 
-			return base.FinishedLaunching(app, options);
-		}
-	}
+            WireUpLongRunningTask();
+
+            return base.FinishedLaunching(app, options);
+        }
+
+        #region Methods
+        iOSLongRunningTaskExample longRunningTaskExample;
+
+        void WireUpLongRunningTask()
+        {
+            MessagingCenter.Subscribe<StartLongRunningTaskMessage>(this, "StartLongRunningTaskMessage", async message =>
+            {
+                longRunningTaskExample = new iOSLongRunningTaskExample();
+                await longRunningTaskExample.Start();
+            });
+
+            MessagingCenter.Subscribe<StopLongRunningTaskMessage>(this, "StopLongRunningTaskMessage", message =>
+            {
+                longRunningTaskExample.Stop();
+            });
+        }
+        #endregion
+    }
 }

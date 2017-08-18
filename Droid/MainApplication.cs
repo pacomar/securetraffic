@@ -4,29 +4,43 @@ using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
+using Android.Content;
+using Android.Content.PM;
+using Xamarin.Forms;
+using SecureTraffic.Messages;
+using SecureTraffic.Droid.Services;
 
 namespace SecureTraffic.Droid
 {
 	//You can specify additional application information in this attribute
-    [Application]
-    public class MainApplication : Application, Application.IActivityLifecycleCallbacks
+    public class MainApplication : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
-        public MainApplication(IntPtr handle, JniHandleOwnership transer)
-          :base(handle, transer)
-        {
-        }
 
-        public override void OnCreate()
+        protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate();
-            RegisterActivityLifecycleCallbacks(this);
+            base.OnCreate(bundle);
+            //RegisterActivityLifecycleCallbacks(this);
             //A great place to initialize Xamarin.Insights and Dependency Services!
+
+            Forms.Init(this, bundle);
+
+            LoadApplication(new App());
+            WireUpLongRunningTask();
         }
 
-        public override void OnTerminate()
+        void WireUpLongRunningTask()
         {
-            base.OnTerminate();
-            UnregisterActivityLifecycleCallbacks(this);
+            MessagingCenter.Subscribe<StartLongRunningTaskMessage>(this, "StartLongRunningTaskMessage", message =>
+            {
+                var intent = new Intent(this, typeof(LongRunningTaskService));
+                StartService(intent);
+            });
+
+            MessagingCenter.Subscribe<StopLongRunningTaskMessage>(this, "StopLongRunningTaskMessage", message =>
+            {
+                var intent = new Intent(this, typeof(LongRunningTaskService));
+                StopService(intent);
+            });
         }
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
