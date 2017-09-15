@@ -21,7 +21,7 @@ namespace SecureTraffic
 
             if (!locator.IsGeolocationAvailable && !locator.IsGeolocationEnabled) DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");
 
-            BindingContext = new FastVehicleViewModel(MyMap, ImageAlert);
+            BindingContext = new FastVehicleViewModel(MyMap, ImageAlert, TextDistance);
         }
 
         public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
