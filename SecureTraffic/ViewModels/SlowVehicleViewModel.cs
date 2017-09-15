@@ -132,7 +132,7 @@ namespace SecureTraffic
 			}
 			catch(Exception ex)
 			{
-			  Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex);
+			  Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex.Message);
               await Task.Delay(5000);
               StartListening();
             }

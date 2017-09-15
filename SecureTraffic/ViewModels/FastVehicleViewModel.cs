@@ -20,18 +20,25 @@ namespace SecureTraffic
         private Map _map { get; set; }
         private Position myPosition;
         private Position myLastPosition;
-        private int alertDistance = 500;
-        private int distancePosibleAlert = 1000;
+        private int alertDistance = 750;
+        private int distancePosibleAlert = 1500;
         private Image imagen { get; set; }
 
         public FastVehicleViewModel(Map _map,Image imagen)
         {
-            string rnd = new Random().Next(int.MinValue, int.MaxValue).ToString();
+            try
+            {
+                string rnd = new Random().Next(int.MinValue, int.MaxValue).ToString();
 
-            this._map = _map;
-            this.imagen = imagen;
+                this._map = _map;
+                this.imagen = imagen;
 
-			CenterMap();
+                CenterMap();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("FastVehicleViewModel: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -68,7 +75,7 @@ namespace SecureTraffic
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex);
+                Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex.Message);
             }
 
             return res;
@@ -76,18 +83,25 @@ namespace SecureTraffic
 
         public async void AvisarSoyLento(Plugin.Geolocator.Abstractions.Position position)
         {
-            VehiclesService _vehServ = new VehiclesService();
-
-            //TODO map e to My position
-            MyPosition aux = new MyPosition()
+            try
             {
-                Coordinate = new Coordinate(position.Latitude, position.Longitude),
-                Speed = position.Speed,
-                Vehicle = Vehicle.Otro,
-                Time = Helper.ConvertToTimestamp(DateTime.Now).ToString()
-            };
-            this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
-            await _vehServ.SetPositionVehicle(aux);
+                VehiclesService _vehServ = new VehiclesService();
+
+                //TODO map e to My position
+                MyPosition aux = new MyPosition()
+                {
+                    Coordinate = new Coordinate(position.Latitude, position.Longitude),
+                    Speed = position.Speed,
+                    Vehicle = Vehicle.Otro,
+                    Time = Helper.ConvertToTimestamp(DateTime.Now).ToString()
+                };
+                this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
+                await _vehServ.SetPositionVehicle(aux);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("AvisarSoyLento: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -125,7 +139,7 @@ namespace SecureTraffic
                     if (lanzaraviso)
                     {
                         alertar = true;
-                        Alertar();
+                        Alertar(vehicle.Object.CurrentPosition.Vehicle);
                     }
                 }
 
@@ -139,31 +153,40 @@ namespace SecureTraffic
             catch (Exception ex)
             {
                 CenterMap();
+                Debug.WriteLine("UpdateMarkers: " + ex.Message);
                 return true;
-                Debug.WriteLine("Excep: " + ex);
             }
             
         }
 
         public bool ComprobarDistanciaYCarretera(InfoCloseVehicule infoVehicle, Coordinate x1, Coordinate x2, Coordinate y1, Coordinate y2)
         {
-            if (infoVehicle.distance < alertDistance)
+            try
             {
-                List<string> listacalles= ListaCalles();
-                List<string> listacontrolarsentidoautopistas= ListaAutopistas();
-                bool esunacarretera = !listacalles.Any(x => infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
-                bool esdeunicosentido = listacontrolarsentidoautopistas.Any(x => infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
+                if (infoVehicle.distance < alertDistance)
+                {
+                    List<string> listacalles = ListaCalles();
+                    List<string> listacontrolarsentidoautopistas = ListaAutopistas();
+                    bool esunacarretera = !listacalles.Any(x => infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
+                    bool esdeunicosentido = listacontrolarsentidoautopistas.Any(x => infoVehicle.adressSlowVehicule.Split(',')[0].ToLower().Contains(x.ToLower()));
 
-                if (infoVehicle.adressSlowVehicule.Split(',')[0] == infoVehicle.adressMyVehicule.Split(',')[0] && esunacarretera)
+                    if (infoVehicle.adressSlowVehicule.Split(',')[0] == infoVehicle.adressMyVehicule.Split(',')[0] && esunacarretera)
                     {
-                    if (esdeunicosentido)
-                    {
-                        if (EsMismoSentido(x1, x2, y1, y2)) return true;
+                        if (esdeunicosentido)
+                        {
+                            if (EsMismoSentido(x1, x2, y1, y2)) return true;
+                        }
+                        else return true;
                     }
-                    else return true;
-                    }
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ComprobarDistanciaYCarretera: " + ex.Message);
+                return false;
+            }
+
         }
 
         public List<string> ListaCalles()
@@ -178,35 +201,59 @@ namespace SecureTraffic
 
         public bool EsMismoSentido(Coordinate x1, Coordinate x2, Coordinate y1, Coordinate y2)
         {
-            Sentidos sentidolatitudx = Sentidos.Incierto;
-            Sentidos sentidolongitudx = Sentidos.Incierto;
-            Sentidos sentidolatitudy = Sentidos.Incierto;
-            Sentidos sentidolongitudy = Sentidos.Incierto;
+            try
+            {
+                Sentidos sentidolatitudx = Sentidos.Incierto;
+                Sentidos sentidolongitudx = Sentidos.Incierto;
+                Sentidos sentidolatitudy = Sentidos.Incierto;
+                Sentidos sentidolongitudy = Sentidos.Incierto;
 
-            sentidolatitudx = CalcularSentidoLatitud(x1.Latitude, x2.Latitude);
-            sentidolongitudx = CalcularSentidoLongitud(x1.Longitude, x2.Longitude);
-            sentidolatitudy = CalcularSentidoLatitud(y1.Latitude, y2.Latitude);
-            sentidolongitudy = CalcularSentidoLongitud(y1.Longitude, y2.Longitude);
+                sentidolatitudx = CalcularSentidoLatitud(x1.Latitude, x2.Latitude);
+                sentidolongitudx = CalcularSentidoLongitud(x1.Longitude, x2.Longitude);
+                sentidolatitudy = CalcularSentidoLatitud(y1.Latitude, y2.Latitude);
+                sentidolongitudy = CalcularSentidoLongitud(y1.Longitude, y2.Longitude);
 
-            if (sentidolatitudx == sentidolatitudy || sentidolongitudx == sentidolongitudy) return true;
+                if (sentidolatitudx == sentidolatitudy || sentidolongitudx == sentidolongitudy) return true;
 
-            return false;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("EsMismoSentido: " + ex.Message);
+                return false;
+            }
         }
 
         public Sentidos CalcularSentidoLongitud(double cordenada1, double cordenada2)
         {
-            if (cordenada1 > cordenada2) return Sentidos.Oeste;
-            else if (cordenada1 < cordenada2)  return Sentidos.Este;
+            try
+            {
+                if (cordenada1 > cordenada2) return Sentidos.Oeste;
+                else if (cordenada1 < cordenada2) return Sentidos.Este;
 
-            return Sentidos.Incierto;
+                return Sentidos.Incierto;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("CalcularSentidoLongitud: " + ex.Message);
+                return Sentidos.Incierto;
+            }
         }
 
         public Sentidos CalcularSentidoLatitud(double cordenada1, double cordenada2)
         {
-            if (cordenada1 > cordenada2) return Sentidos.Sur;
-            else if (cordenada1 < cordenada2) return Sentidos.Norte;
+            try
+            {
+                if (cordenada1 > cordenada2) return Sentidos.Sur;
+                else if (cordenada1 < cordenada2) return Sentidos.Norte;
 
-            return Sentidos.Incierto;
+                return Sentidos.Incierto;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("CalcularSentidoLatitud: " + ex.Message);
+                return Sentidos.Incierto;
+            }
         }
 
         /// <summary>
@@ -220,14 +267,23 @@ namespace SecureTraffic
         private double CalculateDistanceLine(double fromLong, double fromLat,
                     double toLong, double toLat)
         {
-            double d2r = Math.PI / 180;
-            double dLong = (toLong - fromLong) * d2r;
-            double dLat = (toLat - fromLat) * d2r;
-            double a = Math.Pow(Math.Sin(dLat / 2.0), 2) + Math.Cos(fromLat * d2r)
-                    * Math.Cos(toLat * d2r) * Math.Pow(Math.Sin(dLong / 2.0), 2);
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            double d = 6367000 * c;
-            return Math.Round(d);
+            try
+            {
+                double d2r = Math.PI / 180;
+                double dLong = (toLong - fromLong) * d2r;
+                double dLat = (toLat - fromLat) * d2r;
+                double a = Math.Pow(Math.Sin(dLat / 2.0), 2) + Math.Cos(fromLat * d2r)
+                        * Math.Cos(toLat * d2r) * Math.Pow(Math.Sin(dLong / 2.0), 2);
+                double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+                double d = 6367000 * c;
+                return Math.Round(d);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("CalculateDistanceLine: " + ex.Message);
+                return double.MaxValue;
+            }
+
         }
 
         /// <summary>
@@ -241,38 +297,46 @@ namespace SecureTraffic
         private async Task<InfoCloseVehicule> GetInformationCloseVehicle(double fromLong, double fromLat,
                     double toLong, double toLat)
         {
-            InfoCloseVehicule informacionVehiculo = new InfoCloseVehicule();
-            var url = HttpWebRequest.Create("https://maps.googleapis.com/maps/api/directions/json?origin=" + fromLong.ToString().Replace(',', '.') + "," + fromLat.ToString().Replace(',', '.') + "&destination=" + toLong.ToString().Replace(',', '.') + "," + toLat.ToString().Replace(',', '.') + "&sensor=false");/*&key=AIzaSyAC25WcCdJIF5uvWLXMgGuYK4Y9sBZpJ34");*/
-
-            url.ContentType = "application/json";
-            url.Method = "GET";
-
-            using (HttpWebResponse response = url.GetResponseAsync().Result as HttpWebResponse)
+            try
             {
-                if (response.StatusCode == HttpStatusCode.OK)
+                InfoCloseVehicule informacionVehiculo = new InfoCloseVehicule();
+                var url = HttpWebRequest.Create("https://maps.googleapis.com/maps/api/directions/json?origin=" + fromLong.ToString().Replace(',', '.') + "," + fromLat.ToString().Replace(',', '.') + "&destination=" + toLong.ToString().Replace(',', '.') + "," + toLat.ToString().Replace(',', '.') + "&sensor=false");/*&key=AIzaSyAC25WcCdJIF5uvWLXMgGuYK4Y9sBZpJ34");*/
+
+                url.ContentType = "application/json";
+                url.Method = "GET";
+
+                using (HttpWebResponse response = url.GetResponseAsync().Result as HttpWebResponse)
                 {
-                    StreamReader reader = new StreamReader(response.GetResponseStream());
-                    var content = reader.ReadToEnd();
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        StreamReader reader = new StreamReader(response.GetResponseStream());
+                        var content = reader.ReadToEnd();
 
-                    var JSONObject = Newtonsoft.Json.Linq.JObject.Parse(content);
+                        var JSONObject = Newtonsoft.Json.Linq.JObject.Parse(content);
 
-                    string distanciaText = JSONObject["routes"][0]["legs"][0]["distance"]["text"].ToString();
-                    string tiempoText = JSONObject["routes"][0]["legs"][0]["duration"]["text"].ToString();
-                    string distancia = JSONObject["routes"][0]["legs"][0]["distance"]["value"].ToString();
-                    string tiempo = JSONObject["routes"][0]["legs"][0]["duration"]["value"].ToString();
-                    string direccionVehiculo = JSONObject["routes"][0]["legs"][0]["end_address"].ToString();
-                    string direccionPropia = JSONObject["routes"][0]["legs"][0]["start_address"].ToString();
+                        string distanciaText = JSONObject["routes"][0]["legs"][0]["distance"]["text"].ToString();
+                        string tiempoText = JSONObject["routes"][0]["legs"][0]["duration"]["text"].ToString();
+                        string distancia = JSONObject["routes"][0]["legs"][0]["distance"]["value"].ToString();
+                        string tiempo = JSONObject["routes"][0]["legs"][0]["duration"]["value"].ToString();
+                        string direccionVehiculo = JSONObject["routes"][0]["legs"][0]["end_address"].ToString();
+                        string direccionPropia = JSONObject["routes"][0]["legs"][0]["start_address"].ToString();
 
-                    informacionVehiculo.distance = Int32.Parse(distancia);
-                    informacionVehiculo.time = Int32.Parse(tiempo);
-                    informacionVehiculo.distanceText = distanciaText;
-                    informacionVehiculo.timeText = tiempoText;
-                    informacionVehiculo.adressSlowVehicule = direccionVehiculo;
-                    informacionVehiculo.adressMyVehicule = direccionPropia;
+                        informacionVehiculo.distance = Int32.Parse(distancia);
+                        informacionVehiculo.time = Int32.Parse(tiempo);
+                        informacionVehiculo.distanceText = distanciaText;
+                        informacionVehiculo.timeText = tiempoText;
+                        informacionVehiculo.adressSlowVehicule = direccionVehiculo;
+                        informacionVehiculo.adressMyVehicule = direccionPropia;
+                    }
                 }
+
+                return informacionVehiculo;
             }
-            
-            return informacionVehiculo;
+            catch (Exception ex)
+            {
+                Debug.WriteLine("GetInformationCloseVehicle: " + ex.Message);
+                return new InfoCloseVehicule();
+            }
         }
 
         /// <summary>
@@ -281,52 +345,92 @@ namespace SecureTraffic
         /// <returns>Configuracion alertas</returns>
         protected SettingsModel retrieveSettings()
         {
-            if (Application.Current.Properties.ContainsKey("sonido") && Application.Current.Properties.ContainsKey("imagen") && Application.Current.Properties.ContainsKey("color"))
+            try
             {
-                bool sonido = (bool) Application.Current.Properties["sonido"];
-                bool imagen = (bool) Application.Current.Properties["imagen"];
-                bool color = (bool) Application.Current.Properties["color"];
+                if (Application.Current.Properties.ContainsKey("sonido") && Application.Current.Properties.ContainsKey("imagen") && Application.Current.Properties.ContainsKey("color"))
+                {
+                    bool sonido = (bool)Application.Current.Properties["sonido"];
+                    bool imagen = (bool)Application.Current.Properties["imagen"];
+                    bool color = (bool)Application.Current.Properties["color"];
 
-                return new SettingsModel(sonido, imagen, color);
+                    return new SettingsModel(sonido, imagen, color);
+                }
+                return new SettingsModel();
             }
-            return new SettingsModel();
+            catch (Exception ex)
+            {
+                Debug.WriteLine("retrieveSettings: " + ex.Message);
+                return new SettingsModel();
+            }
         }
 
-        public void Alertar()
+        public void Alertar(Vehicle vehicle)
         {
+            try
+            {
+                SettingsModel settings = retrieveSettings();
 
-            SettingsModel settings = retrieveSettings();
+                if (settings.imagen)
+                {
+                    switch (vehicle)
+                    {
+                        case Vehicle.Agricola:
+                            imagen.Source = "agricola.png";
+                            break;
+                        case Vehicle.Bici:
+                            imagen.Source = "bici.png";
+                            break;
+                        case Vehicle.Obra:
+                            imagen.Source = "obra.png";
+                            break;
+                        case Vehicle.Otro:
+                            imagen.Source = "otro.png";
+                            break;
+                        case Vehicle.Persona:
+                            imagen.Source = "persona.png";
+                            break;
+                    }
 
-            if (settings.imagen)
-            {
-                imagen.IsVisible = true;
+                    imagen.IsVisible = true;
+                }
+                if (settings.sonido)
+                {
+                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                }
+                if (settings.color)
+                {
+                    //solo version free
+                }
             }
-            if (settings.sonido)
+            catch (Exception ex)
             {
-                CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
-                CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
-            }
-            if (settings.color)
-            {
-                //solo version free
+                Debug.WriteLine("Alertar: " + ex.Message);
             }
         }
 
         public void PararAlertar()
         {
-            SettingsModel settings = retrieveSettings();
+            try
+            {
+                SettingsModel settings = retrieveSettings();
 
-            if (settings.sonido)
-            {
-                CrossMediaManager.Current.Stop();
+                if (settings.sonido)
+                {
+                    CrossMediaManager.Current.Stop();
+                }
+                if (settings.imagen)
+                {
+                    imagen.IsVisible = false;
+                }
+                if (settings.color)
+                {
+                    //solo version free
+                }
             }
-            if (settings.imagen)
-            { 
-                imagen.IsVisible = false;
-            }
-            if (settings.color)
+            catch (Exception ex)
             {
-                //solo version free
+                Debug.WriteLine("PararAlertar: " + ex.Message);
             }
         }
     }
