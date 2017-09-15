@@ -28,6 +28,8 @@
                     </Image.GestureRecognizers>
                 </Image>
 
+                <Label TextColor="Red" AbsoluteLayout.LayoutBounds="0.5,0.5,0.5,0.5" Text="" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" IsVisible="False" x:Name="TextDistance"/>
+
             </AbsoluteLayout>
             <Grid Grid.Row="1" Grid.Column="0" RowSpacing="0" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>

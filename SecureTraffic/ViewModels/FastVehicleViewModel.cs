@@ -23,8 +23,8 @@ namespace SecureTraffic
         private int alertDistance = 800;
         private int distancePosibleAlert = 1600;
         private Image imagen { get; set; }
-
-        public FastVehicleViewModel(Map _map,Image imagen)
+        private Label distanceLabel { get; set; }
+        public FastVehicleViewModel(Map _map,Image imagen, Label distanceLabel)
         {
             try
             {
@@ -32,6 +32,7 @@ namespace SecureTraffic
 
                 this._map = _map;
                 this.imagen = imagen;
+                this.distanceLabel = distanceLabel;
 
                 CenterMap();
             }
@@ -139,7 +140,7 @@ namespace SecureTraffic
                     if (lanzaraviso)
                     {
                         alertar = true;
-                        Alertar(vehicle.Object.CurrentPosition.Vehicle);
+                        Alertar(vehicle.Object.CurrentPosition.Vehicle, infoVehicle.distanceText);
                     }
                 }
 
@@ -364,7 +365,7 @@ namespace SecureTraffic
             }
         }
 
-        public void Alertar(Vehicle vehicle)
+        public void Alertar(Vehicle vehicle, string metros)
         {
             try
             {
@@ -392,6 +393,8 @@ namespace SecureTraffic
                     }
 
                     imagen.IsVisible = true;
+                    distanceLabel.IsVisible = true;
+                    distanceLabel.Text = metros;
                 }
                 if (settings.sonido)
                 {
@@ -422,6 +425,7 @@ namespace SecureTraffic
                 if (settings.imagen)
                 {
                     imagen.IsVisible = false;
+                    distanceLabel.IsVisible = false;
                 }
                 if (settings.color)
                 {
