@@ -20,8 +20,8 @@ namespace SecureTraffic
         private Map _map { get; set; }
         private Position myPosition;
         private Position myLastPosition;
-        private int alertDistance = 750;
-        private int distancePosibleAlert = 1500;
+        private int alertDistance = 800;
+        private int distancePosibleAlert = 1600;
         private Image imagen { get; set; }
 
         public FastVehicleViewModel(Map _map,Image imagen)
@@ -115,7 +115,7 @@ namespace SecureTraffic
                 VehiclesService _vehServ = new VehiclesService();
                 var vehicles = await _vehServ.GetVehicles();
                 this._map.Pins.Clear();
-
+                
                 bool alertar = false;
                 foreach (var vehicle in vehicles)
                 {
