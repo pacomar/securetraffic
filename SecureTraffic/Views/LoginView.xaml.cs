@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace SecureTraffic
@@ -9,63 +9,70 @@ namespace SecureTraffic
 	{
 		public LoginView()
 		{
-			InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            this.Title = "Login";
-		
-			GoRegister.Clicked += async(sender, args) =>
-			{
-				await Navigation.PushModalAsync(new NavigationPage(new RegisterView()));
-			};
+                this.Title = "Login";
 
-			DoLogin.Clicked += async(sender, args) =>
-			{
-				//Loadding.IsRunning = true;
-				bool resgisted = await new UserViewModel().LoginUser(email.Text, password.Text);
-				if (resgisted)
-				{
-					//Loadding.IsRunning = false;
-					await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
-				}
-				else
-				{
-					//Loadding.IsRunning = false;
-                    await DisplayAlert("Alert", "Tus datos no son correctos", "OK");
-					password.Text = "";
-				}
-			};
+                GoRegister.Clicked += async (sender, args) =>
+                {
+                    await Navigation.PushModalAsync(new NavigationPage(new RegisterView()));
+                };
 
-			DoLoginGoogle.Clicked += async(sender, args) =>
-			{
-				//Loadding.IsRunning = true;
-				bool resgisted = await new UserViewModel().LoginUserGoogle();
-				if (resgisted)
-				{
-					//Loadding.IsRunning = false;
-					await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
-				}
-				else
-				{
-					//Loadding.IsRunning = false;
-                    await DisplayAlert("Alert", "Error al iniciar sesión", "OK");	password.Text = "";
-				}
-			};
+                DoLogin.Clicked += async (sender, args) =>
+                {
+                    //Loadding.IsRunning = true;
+                    bool resgisted = await new UserViewModel().LoginUser(email.Text, password.Text);
+                    if (resgisted)
+                    {
+                        //Loadding.IsRunning = false;
+                        await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
+                    }
+                    else
+                    {
+                        //Loadding.IsRunning = false;
+                        await DisplayAlert("Alert", "Tus datos no son correctos", "OK");
+                        password.Text = "";
+                    }
+                };
 
-			DoLoginFacebook.Clicked += async(sender, args) =>
-			{
-				//Loadding.IsRunning = true;
-				bool resgisted = await new UserViewModel().LoginUserFacebook();
-				if (resgisted)
-				{
-					//Loadding.IsRunning = false;
-					await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
-				}
-				else
-				{
-					//Loadding.IsRunning = false;
-                    await DisplayAlert("Alert", "Error al iniciar sesión", "OK"); password.Text = "";
-				}
-			};
+                DoLoginGoogle.Clicked += async (sender, args) =>
+                {
+                    //Loadding.IsRunning = true;
+                    bool resgisted = await new UserViewModel().LoginUserGoogle();
+                    if (resgisted)
+                    {
+                        //Loadding.IsRunning = false;
+                        await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
+                    }
+                    else
+                    {
+                        //Loadding.IsRunning = false;
+                        await DisplayAlert("Alert", "Error al iniciar sesión", "OK"); password.Text = "";
+                    }
+                };
+
+                DoLoginFacebook.Clicked += async (sender, args) =>
+                {
+                    //Loadding.IsRunning = true;
+                    bool resgisted = await new UserViewModel().LoginUserFacebook();
+                    if (resgisted)
+                    {
+                        //Loadding.IsRunning = false;
+                        await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
+                    }
+                    else
+                    {
+                        //Loadding.IsRunning = false;
+                        await DisplayAlert("Alert", "Error al iniciar sesión", "OK"); password.Text = "";
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("LoginView: " + ex.Message);
+            }
 		}
 	}
 }

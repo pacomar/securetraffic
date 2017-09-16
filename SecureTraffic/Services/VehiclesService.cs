@@ -49,17 +49,36 @@ namespace SecureTraffic
 
 		public async Task<IEnumerable<FirebaseObject<MyVehicle>>> GetVehicles()
 		{
-			var items = await firebase
-				.Child("Vehicle")
-				//.WithAuth(App.token)
-				.OnceAsync<MyVehicle>();
+            try
+            {
+                var items = await firebase
+    .Child("Vehicle")
+    //.WithAuth(App.token)
+    .OnceAsync<MyVehicle>();
 
-			int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
-			var aux = items.Where(veh => (
-				(timestamp - long.Parse(veh.Object.Time)) < 300) &&
-              	veh.Key != App.guid.ToString());
+                int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
+                var aux = items.Where(veh => (
+                    (timestamp - long.Parse(veh.Object.Time)) < 300) &&
+                      veh.Key != App.guid.ToString());
 
-			return aux;
+                return aux;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                var items = await firebase
+    .Child("Vehicle")
+    //.WithAuth(App.token)
+    .OnceAsync<MyVehicle>();
+
+                int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
+                var aux = items.Where(veh => (
+                    (timestamp - long.Parse(veh.Object.Time)) < 300) &&
+                      veh.Key != App.guid.ToString());
+
+                return aux;
+            }
+
 		}
 	}
 }

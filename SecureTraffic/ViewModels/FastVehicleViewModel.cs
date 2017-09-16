@@ -57,9 +57,8 @@ namespace SecureTraffic
                 locator.DesiredAccuracy = 50;
 
                 var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
-                if (position == null)
-                    return res;
-                
+                while  (position == null) position =  await locator.GetPositionAsync(timeoutMilliseconds: 10000);
+
                 try { myLastPosition = myPosition; } catch { }
                 myPosition = new Position(position.Latitude, position.Longitude);
 
@@ -115,7 +114,7 @@ namespace SecureTraffic
         {
             try
             {
-                Alertar(Vehicle.Agricola,"300 m");
+                
                 VehiclesService _vehServ = new VehiclesService();
                 var vehicles = await _vehServ.GetVehicles();
                 this._map.Pins.Clear();
