@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>SecureTraffic</string>
+	<string>SecurTraffic</string>
 	<key>CFBundleName</key>
-	<string>SecureTraffic</string>
+	<string>SecurTraffic</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.securetraffic</string>
+	<string>com.securtraffic</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

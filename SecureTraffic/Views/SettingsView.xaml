@@ -7,15 +7,21 @@
 	    <StackLayout Spacing="10" x:Name="layout">
             
             <Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
-
+            	<Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+				
                 <Label Grid.Row="0" Grid.Column="0" Text="Alerta por sonido" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                <Switch Grid.Row="0" Grid.Column="1" x:Name="SwitchSonido" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledSonido"></Switch>
+                <Switch Grid.Row="0" Grid.Column="1" x:Name="SwitchSonido" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledSonido" HorizontalOptions="Center" VerticalOptions="Center"></Switch>
 
                 <Label Grid.Row="1" Grid.Column="0" Text="Alerta por imagen" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                <Switch Grid.Row="1" Grid.Column="1" x:Name="SwitchImagen" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledImagen"></Switch>
+                <Switch Grid.Row="1" Grid.Column="1" x:Name="SwitchImagen" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledImagen"  HorizontalOptions="Center" VerticalOptions="Center"></Switch>
 
                 <Label Grid.Row="2" Grid.Column="0" Text="Alerta por color" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                <Switch Grid.Row="2" Grid.Column="1" x:Name="SwitchColor" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledColor"></Switch>
+                <Switch Grid.Row="2" Grid.Column="1" x:Name="SwitchColor" IsToggled="{Binding IsOwned, Mode=TwoWay}" Toggled="Handle_ToggledColor"  HorizontalOptions="Center" VerticalOptions="Center"></Switch>
 
                 <Label Grid.Row="3" Grid.Column="0" Text="Olvidar el usuario" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                 <Button Grid.Row="3" Grid.Column="1"  Text="Logout" x:Name="DoLogout" Margin="40" />
