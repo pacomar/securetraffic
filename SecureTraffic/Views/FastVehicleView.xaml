@@ -21,14 +21,14 @@
                     MapType="Street"
                 />
 
-                <Image Source="alerta.png" BackgroundColor="Transparent" AbsoluteLayout.LayoutBounds="0.5,0.5,0.5,0.5" AbsoluteLayout.LayoutFlags="All" IsVisible="True" x:Name="ImageAlert">
+                <Image Source="alerta.png" BackgroundColor="Transparent" AbsoluteLayout.LayoutBounds="0.5,0.5,0.5,0.5" AbsoluteLayout.LayoutFlags="All" IsVisible="False" x:Name="ImageAlert">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTappedAlert"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Label Text="I'm bottom center on every device." AbsoluteLayout.LayoutBounds="0.5,0.5,0.5,0.5"
-					AbsoluteLayout.LayoutFlags="All" x:Name="TextDistance" LineBreakMode="WordWrap"  /> 
+                <Label Text="Próximo" AbsoluteLayout.LayoutBounds="0.5,0.5,0.5,0.5"
+					AbsoluteLayout.LayoutFlags="All" x:Name="TextDistance" LineBreakMode="WordWrap"  FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="False"/> 
             </AbsoluteLayout>
             <Grid Grid.Row="1" Grid.Column="0" RowSpacing="0" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>

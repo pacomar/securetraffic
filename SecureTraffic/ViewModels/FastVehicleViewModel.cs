@@ -20,8 +20,8 @@ namespace SecureTraffic
         private Map _map { get; set; }
         private Position myPosition;
         private Position myLastPosition;
-        private int alertDistance = 800;
-        private int distancePosibleAlert = 1600;
+        private int alertDistance = 1000;
+        private int distancePosibleAlert = 1200;
         private Image imagen { get; set; }
         private Label distanceLabel { get; set; }
         public FastVehicleViewModel(Map _map,Image imagen, Label distanceLabel)
@@ -33,7 +33,7 @@ namespace SecureTraffic
                 this._map = _map;
                 this.imagen = imagen;
                 this.distanceLabel = distanceLabel;
-
+               
                 CenterMap();
             }
             catch (Exception ex)
@@ -52,6 +52,7 @@ namespace SecureTraffic
 
             try
             {
+
                 var locator = CrossGeolocator.Current;
                 locator.DesiredAccuracy = 50;
 
@@ -77,6 +78,7 @@ namespace SecureTraffic
             catch (Exception ex)
             {
                 Debug.WriteLine("Unable to get location, may need to increase timeout: " + ex.Message);
+                CenterMap();
             }
 
             return res;
@@ -113,6 +115,7 @@ namespace SecureTraffic
         {
             try
             {
+                Alertar(Vehicle.Agricola,"300 m");
                 VehiclesService _vehServ = new VehiclesService();
                 var vehicles = await _vehServ.GetVehicles();
                 this._map.Pins.Clear();
