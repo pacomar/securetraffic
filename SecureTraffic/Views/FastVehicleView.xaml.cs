@@ -10,7 +10,7 @@ namespace SecureTraffic
 		{
 			InitializeComponent();
 
-			this.Title = "SecurTraffic";
+			this.Title = "SECURTRAFFIC";
 
 			ToolbarItems.Add(new ToolbarItem(){
 				Text = "Ajustes",
@@ -55,6 +55,7 @@ namespace SecureTraffic
         {
             Image imagen = (Image)sender;
             imagen.IsVisible = false;
+            TextDistance.IsVisible = false;
         }
 
         public async void LanzarPantallaSettings()

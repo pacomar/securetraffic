@@ -137,6 +137,7 @@ namespace SecureTraffic
                     };
                     this._map.Pins.Add(pin);
 
+
                     bool lanzaraviso = ComprobarDistanciaYCarretera(infoVehicle, new Coordinate(myPosition.Latitude, myPosition.Longitude), new Coordinate(myLastPosition.Latitude, myLastPosition.Longitude), vehicle.Object.CurrentPosition.Coordinate, vehicle.Object.LastPosition.Coordinate);
 
                     if (lanzaraviso)
@@ -431,7 +432,7 @@ namespace SecureTraffic
                 }
                 if (settings.color)
                 {
-                    //solo version free
+                    //ya no hay version free
                 }
             }
             catch (Exception ex)

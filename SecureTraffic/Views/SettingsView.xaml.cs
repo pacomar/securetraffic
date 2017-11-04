@@ -24,7 +24,7 @@ namespace SecureTraffic
 
                 SwitchSonido.IsToggled = settingsalertas.sonido;
                 SwitchImagen.IsToggled = settingsalertas.imagen;
-                SwitchColor.IsToggled = settingsalertas.color;
+                //SwitchColor.IsToggled = settingsalertas.color;
 
         }
 
@@ -46,14 +46,14 @@ namespace SecureTraffic
             SaveSettings(settingsalertas);
         }
 
-        private void Handle_ToggledColor(object sender, Xamarin.Forms.ToggledEventArgs e)
-        {
-            SettingsModel settingsalertas = retrieveSettings();
+        //private void Handle_ToggledColor(object sender, Xamarin.Forms.ToggledEventArgs e)
+        //{
+        //    SettingsModel settingsalertas = retrieveSettings();
 
-            settingsalertas.color = SwitchColor.IsToggled;
+        //    settingsalertas.color = SwitchColor.IsToggled;
 
-            SaveSettings(settingsalertas);
-        }
+        //    SaveSettings(settingsalertas);
+        //}
 
         /// <summary>
         /// Funcion que devuelve la configuracion de alertas si no hay devuelve todas a true
