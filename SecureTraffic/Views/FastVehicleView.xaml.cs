@@ -4,24 +4,25 @@ using Xamarin.Forms;
 
 namespace SecureTraffic
 {
-	public partial class FastVehicleView : ContentPage
-	{
-		public FastVehicleView()
-		{
-			InitializeComponent();
+    public partial class FastVehicleView : ContentPage
+    {
+        public FastVehicleView()
+        {
+            InitializeComponent();
 
-			this.Title = "SECURTRAFFIC";
+            this.Title = "SECURTRAFFIC";
 
-			ToolbarItems.Add(new ToolbarItem(){
-				Text = "Ajustes",
-				Command = new Command(() => LanzarPantallaSettings() )
+            ToolbarItems.Add(new ToolbarItem()
+            {
+                Text = "Ajustes",
+                Command = new Command(() => LanzarPantallaSettings())
             });
 
             var locator = CrossGeolocator.Current;
 
             if (!locator.IsGeolocationAvailable && !locator.IsGeolocationEnabled) DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");
 
-            BindingContext = new FastVehicleViewModel(MyMap, ImageAlert, TextDistance);
+            BindingContext = new FastVehicleViewModel(MyMap, ImageAlert, TextDistance, ImageAlert2, TextDistance2, ImageAlert3, TextDistance3);
         }
 
         public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
@@ -53,14 +54,21 @@ namespace SecureTraffic
 
         public void OnTapGestureRecognizerTappedAlert(object sender, EventArgs args)
         {
-            Image imagen = (Image)sender;
-            imagen.IsVisible = false;
+            //Image imagen = (Image)sender;
+            //imagen.IsVisible = false;
+            ImageAlert.IsVisible = false;
             TextDistance.IsVisible = false;
+
+            ImageAlert2.IsVisible = false;
+            TextDistance2.IsVisible = false;
+
+            ImageAlert3.IsVisible = false;
+            TextDistance3.IsVisible = false;
         }
 
         public async void LanzarPantallaSettings()
         {
-			await Navigation.PushAsync(new SettingsView());
-        } 
+            await Navigation.PushAsync(new SettingsView());
+        }
     }
 }

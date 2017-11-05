@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
 	x:Class="SecureTraffic.FastVehicleView">
-	<StackLayout VerticalOptions="FillAndExpand" Padding="0">
+    <StackLayout VerticalOptions="FillAndExpand" Padding="0">
 
         <Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
@@ -28,7 +28,26 @@
                     </Image.GestureRecognizers>
                 </Image>
                 <Label Text="Próximo" AbsoluteLayout.LayoutBounds=".9,0.1,0.25,0.25"
-					AbsoluteLayout.LayoutFlags="All" x:Name="TextDistance" LineBreakMode="WordWrap"  FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="False"/> 
+					AbsoluteLayout.LayoutFlags="All" x:Name="TextDistance" LineBreakMode="WordWrap"  FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="False"/>
+
+                <Image Source="alerta.png" BackgroundColor="Transparent" AbsoluteLayout.LayoutBounds=".5,0.15,0.25,0.25" AbsoluteLayout.LayoutFlags="All" IsVisible="False" x:Name="ImageAlert2">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnTapGestureRecognizerTappedAlert"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Próximo" AbsoluteLayout.LayoutBounds=".5,0.1,0.25,0.25"
+					AbsoluteLayout.LayoutFlags="All" x:Name="TextDistance2" LineBreakMode="WordWrap"  FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="False"/>
+
+                <Image Source="alerta.png" BackgroundColor="Transparent" AbsoluteLayout.LayoutBounds=".1,0.15,0.25,0.25" AbsoluteLayout.LayoutFlags="All" IsVisible="False" x:Name="ImageAlert3">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnTapGestureRecognizerTappedAlert"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Próximo" AbsoluteLayout.LayoutBounds=".1,0.1,0.25,0.25"
+					AbsoluteLayout.LayoutFlags="All" x:Name="TextDistance3" LineBreakMode="WordWrap"  FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="False"/>
+
             </AbsoluteLayout>
             <Grid Grid.Row="1" Grid.Column="0" RowSpacing="0" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
@@ -44,7 +63,7 @@
                             Tapped="OnTapGestureRecognizerTapped"/>
                     </Image.GestureRecognizers>
                 </Image>
-                
+
                 <Image ClassId="1" Source="agricola.png" Grid.Row="0" Grid.Column="1" BackgroundColor="White">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer

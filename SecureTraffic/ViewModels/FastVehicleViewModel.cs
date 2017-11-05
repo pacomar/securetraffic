@@ -12,6 +12,7 @@ using System.IO;
 using Xamarin.Forms;
 using Plugin.MediaManager;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SecureTraffic
 {
@@ -24,7 +25,16 @@ namespace SecureTraffic
         private int distancePosibleAlert = 1200;
         private Image imagen { get; set; }
         private Label distanceLabel { get; set; }
-        public FastVehicleViewModel(Map _map,Image imagen, Label distanceLabel)
+
+        private Image imagen2 { get; set; }
+        private Label distanceLabel2 { get; set; }
+
+        private Image imagen3 { get; set; }
+        private Label distanceLabel3 { get; set; }
+
+        private List<Alerta> alertas = new List<Alerta>();
+
+        public FastVehicleViewModel(Map _map, Image imagen, Label distanceLabel, Image imagen2, Label distanceLabel2, Image imagen3, Label distanceLabel3)
         {
             try
             {
@@ -33,7 +43,16 @@ namespace SecureTraffic
                 this._map = _map;
                 this.imagen = imagen;
                 this.distanceLabel = distanceLabel;
-               
+
+                this.imagen2 = imagen2;
+                this.distanceLabel2 = distanceLabel2;
+
+                this.imagen3 = imagen3;
+                this.distanceLabel3 = distanceLabel3;
+
+                //centrar el mapa en españa - madrid
+                this._map.MoveToRegion(new MapSpan(new Position(40.4893538, -3.6827461), 0.05, 0.05));
+
                 CenterMap();
             }
             catch (Exception ex)
@@ -52,12 +71,11 @@ namespace SecureTraffic
 
             try
             {
-
                 var locator = CrossGeolocator.Current;
                 locator.DesiredAccuracy = 50;
 
                 var position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
-                while  (position == null) position =  await locator.GetPositionAsync(timeoutMilliseconds: 10000);
+                while (position == null) position = await locator.GetPositionAsync(timeoutMilliseconds: 10000);
 
                 try { myLastPosition = myPosition; } catch { }
                 myPosition = new Position(position.Latitude, position.Longitude);
@@ -114,12 +132,14 @@ namespace SecureTraffic
         {
             try
             {
-                
+
                 VehiclesService _vehServ = new VehiclesService();
                 var vehicles = await _vehServ.GetVehicles();
                 this._map.Pins.Clear();
-                
-                bool alertar = false;
+
+                bool alertar = false;//quitar
+                List<Alerta> alertasbuffer = new List<Alerta>();
+
                 foreach (var vehicle in vehicles)
                 {
                     InfoCloseVehicule infoVehicle = new InfoCloseVehicule();
@@ -142,14 +162,21 @@ namespace SecureTraffic
 
                     if (lanzaraviso)
                     {
-                        alertar = true;
-                        Alertar(vehicle.Object.CurrentPosition.Vehicle, infoVehicle.distanceText);
+                        alertasbuffer.Add(new Alerta("MOCKIDENTIFICADOR", vehicle.Object.CurrentPosition.Vehicle, infoVehicle.distanceText, 0, TextoANumero(infoVehicle.distanceText)));
                     }
                 }
 
-                if (!alertar) PararAlertar();
+                alertas = CompararAlertasGuardadasVsNuevas(alertasbuffer);
+
+                if (alertas.Count > 0)
+                {
+                    alertar = true;
+                    Alertar(alertas);
+                }
+                else PararAlertar();
 
                 await Task.Delay(5000);
+
                 CenterMap();
 
                 return true;
@@ -160,7 +187,43 @@ namespace SecureTraffic
                 Debug.WriteLine("UpdateMarkers: " + ex.Message);
                 return true;
             }
-            
+
+        }
+
+        private int TextoANumero(string distanceText)
+        {
+            try
+            {
+                string buffer = Regex.Replace(distanceText, "[^0-9]+", string.Empty);
+
+                return int.Parse(buffer);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("TextoANumero: " + ex.Message);
+                return 500;
+            }
+        }
+
+        private List<Alerta> CompararAlertasGuardadasVsNuevas(List<Alerta> alertasbuffer)
+        {
+            if (alertasbuffer.Count > 0)
+            {
+                foreach (Alerta posiblealerta in alertasbuffer)
+                {
+                    foreach (Alerta posiblealertaguardada in alertas)
+                    {
+
+                        if (posiblealerta.identificador.Equals(posiblealertaguardada.identificador))
+                        {
+                            posiblealerta.contador = posiblealertaguardada.contador++;
+                        }
+
+                    }
+                }
+            }
+
+            return alertasbuffer;
         }
 
         public bool ComprobarDistanciaYCarretera(InfoCloseVehicule infoVehicle, Coordinate x1, Coordinate x2, Coordinate y1, Coordinate y2)
@@ -368,45 +431,141 @@ namespace SecureTraffic
             }
         }
 
-        public void Alertar(Vehicle vehicle, string metros)
+        public void Alertar(List<Alerta> alertasActivas)
         {
             try
             {
                 SettingsModel settings = retrieveSettings();
 
-                if (settings.imagen)
+                List<Alerta> SortedList = alertasActivas.OrderBy(o => o.distancia).Where(o => o.contador < 10).ToList();
+
+                for (int i = 0; i < 3; i++)
                 {
-                    switch (vehicle)
+                    switch (i)
                     {
-                        case Vehicle.Agricola:
-                            imagen.Source = "agricola.png";
+                        case 0:
+                            if (SortedList.Count > 0)
+                            {
+                                if (settings.imagen)
+                                {
+                                    switch (alertas.ToArray()[0].vehiculo)
+                                    {
+                                        case Vehicle.Agricola:
+                                            imagen.Source = "agricola.png";
+                                            break;
+                                        case Vehicle.Bici:
+                                            imagen.Source = "bici.png";
+                                            break;
+                                        case Vehicle.Obra:
+                                            imagen.Source = "obra.png";
+                                            break;
+                                        case Vehicle.Otro:
+                                            imagen.Source = "otro.png";
+                                            break;
+                                        case Vehicle.Persona:
+                                            imagen.Source = "persona.png";
+                                            break;
+                                    }
+
+                                    imagen.IsVisible = true;
+                                    distanceLabel.IsVisible = true;
+                                    distanceLabel.Text = SortedList.ToArray()[0].distanciaTexto;
+                                }
+                                if (settings.sonido)
+                                {
+                                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                                }
+                            }
+                            else
+                            {
+                                imagen.IsVisible = false;
+                                distanceLabel.IsVisible = false;
+                            }
                             break;
-                        case Vehicle.Bici:
-                            imagen.Source = "bici.png";
+
+                        case 1:
+                            if (SortedList.Count > 1)
+                            {
+                                if (settings.imagen)
+                                {
+                                    switch (alertas.ToArray()[0].vehiculo)
+                                    {
+                                        case Vehicle.Agricola:
+                                            imagen.Source = "agricola.png";
+                                            break;
+                                        case Vehicle.Bici:
+                                            imagen.Source = "bici.png";
+                                            break;
+                                        case Vehicle.Obra:
+                                            imagen.Source = "obra.png";
+                                            break;
+                                        case Vehicle.Otro:
+                                            imagen.Source = "otro.png";
+                                            break;
+                                        case Vehicle.Persona:
+                                            imagen.Source = "persona.png";
+                                            break;
+                                    }
+
+                                    imagen2.IsVisible = true;
+                                    distanceLabel2.IsVisible = true;
+                                    distanceLabel2.Text = SortedList.ToArray()[1].distanciaTexto;
+                                }
+                                if (settings.sonido)
+                                {
+                                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                                }
+                            }
+                            else
+                            {
+                                imagen2.IsVisible = false;
+                                distanceLabel2.IsVisible = false;
+                            }
                             break;
-                        case Vehicle.Obra:
-                            imagen.Source = "obra.png";
-                            break;
-                        case Vehicle.Otro:
-                            imagen.Source = "otro.png";
-                            break;
-                        case Vehicle.Persona:
-                            imagen.Source = "persona.png";
+                        case 2:
+
+                            if (SortedList.Count > 2)
+                            {
+                                if (settings.imagen)
+                                {
+                                    switch (alertas.ToArray()[0].vehiculo)
+                                    {
+                                        case Vehicle.Agricola:
+                                            imagen.Source = "agricola.png";
+                                            break;
+                                        case Vehicle.Bici:
+                                            imagen.Source = "bici.png";
+                                            break;
+                                        case Vehicle.Obra:
+                                            imagen.Source = "obra.png";
+                                            break;
+                                        case Vehicle.Otro:
+                                            imagen.Source = "otro.png";
+                                            break;
+                                        case Vehicle.Persona:
+                                            imagen.Source = "persona.png";
+                                            break;
+                                    }
+
+                                    imagen3.IsVisible = true;
+                                    distanceLabel3.IsVisible = true;
+                                    distanceLabel3.Text = SortedList.ToArray()[2].distanciaTexto;
+                                }
+                                if (settings.sonido)
+                                {
+                                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
+                                }
+                            }
+                            else
+                            {
+                                imagen3.IsVisible = false;
+                                distanceLabel3.IsVisible = false;
+                            }
                             break;
                     }
-
-                    imagen.IsVisible = true;
-                    distanceLabel.IsVisible = true;
-                    distanceLabel.Text = metros;
-                }
-                if (settings.sonido)
-                {
-                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
-                    CrossMediaManager.Current.Play("https://www.soundjay.com/button/beep-05.mp3");
-                }
-                if (settings.color)
-                {
-                    //solo version free
                 }
             }
             catch (Exception ex)
@@ -429,6 +588,12 @@ namespace SecureTraffic
                 {
                     imagen.IsVisible = false;
                     distanceLabel.IsVisible = false;
+
+                    imagen2.IsVisible = false;
+                    distanceLabel2.IsVisible = false;
+
+                    imagen2.IsVisible = false;
+                    distanceLabel2.IsVisible = false;
                 }
                 if (settings.color)
                 {

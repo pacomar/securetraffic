@@ -50,6 +50,7 @@
     <Compile Include="Messages\StartLongRunningTaskMessage.cs" />
     <Compile Include="Messages\StopLongRunningTaskMessage.cs" />
     <Compile Include="Messages\TicketMessage.cs" />
+    <Compile Include="Models\Alerta.cs" />
     <Compile Include="Models\InfoCloseVehicule.cs" />
     <Compile Include="Models\Sentidos.cs" />
     <Compile Include="Models\SettingsModel.cs" />

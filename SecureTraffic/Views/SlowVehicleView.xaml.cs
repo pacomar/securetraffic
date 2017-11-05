@@ -6,21 +6,21 @@ using Xamarin.Forms;
 
 namespace SecureTraffic
 {
-	public partial class SlowVehicleView : ContentPage
-	{
-		public SlowVehicleView(Vehicle veh)
-		{
+    public partial class SlowVehicleView : ContentPage
+    {
+        public SlowVehicleView(Vehicle veh)
+        {
             //var attributesWindow = new WindowManagerLayoutParams();
 
-			InitializeComponent();
+            InitializeComponent();
 
-			this.Title = "Emitiendo posición: " + veh;
+            this.Title = "Emitiendo posición: " + veh;
 
             var message = new StartLongRunningTaskMessage();
             MessagingCenter.Send(message, "StartLongRunningTaskMessage");
 
             BindingContext = new SlowVehicleViewModel(veh, MyMap);
-		}
+        }
         protected override bool OnBackButtonPressed()
         {
             var message = new StartLongRunningTaskMessage();
