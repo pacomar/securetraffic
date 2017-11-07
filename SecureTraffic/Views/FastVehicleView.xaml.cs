@@ -18,6 +18,15 @@ namespace SecureTraffic
                 Command = new Command(() => LanzarPantallaSettings())
             });
 
+            GoSlow.Clicked += async (sender, args) =>
+            {
+                ImageBici.IsVisible = true;
+                ImageAgricola.IsVisible = true;
+                ImageObra.IsVisible = true;
+                ImagePersona.IsVisible = true;
+                ImageOtro.IsVisible = true;
+            };
+
             var locator = CrossGeolocator.Current;
 
             if (!locator.IsGeolocationAvailable && !locator.IsGeolocationEnabled) DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");

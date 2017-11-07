@@ -136,8 +136,7 @@ namespace SecureTraffic
                 VehiclesService _vehServ = new VehiclesService();
                 var vehicles = await _vehServ.GetVehicles();
                 this._map.Pins.Clear();
-
-                bool alertar = false;//quitar
+                
                 List<Alerta> alertasbuffer = new List<Alerta>();
 
                 foreach (var vehicle in vehicles)
@@ -162,17 +161,13 @@ namespace SecureTraffic
 
                     if (lanzaraviso)
                     {
-                        alertasbuffer.Add(new Alerta("MOCKIDENTIFICADOR", vehicle.Object.CurrentPosition.Vehicle, infoVehicle.distanceText, 0, TextoANumero(infoVehicle.distanceText)));
+                        alertasbuffer.Add(new Alerta(vehicle.Key, vehicle.Object.CurrentPosition.Vehicle, infoVehicle.distanceText, 0, TextoANumero(infoVehicle.distanceText)));
                     }
                 }
 
                 alertas = CompararAlertasGuardadasVsNuevas(alertasbuffer);
 
-                if (alertas.Count > 0)
-                {
-                    alertar = true;
-                    Alertar(alertas);
-                }
+                if (alertas.Count > 0) Alertar(alertas);
                 else PararAlertar();
 
                 await Task.Delay(5000);

@@ -49,6 +49,7 @@
 					AbsoluteLayout.LayoutFlags="All" x:Name="TextDistance3" LineBreakMode="WordWrap"  FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="False"/>
 
             </AbsoluteLayout>
+
             <Grid Grid.Row="1" Grid.Column="0" RowSpacing="0" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -57,41 +58,44 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Image ClassId="0" Source="bici.png" Grid.Row="0" Grid.Column="0" BackgroundColor="White">
+                <Image ClassId="0" Source="bici.png" Grid.Row="0" Grid.Column="0" BackgroundColor="White" IsVisible="False" x:Name="ImageBici">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTapped"/>
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image ClassId="1" Source="agricola.png" Grid.Row="0" Grid.Column="1" BackgroundColor="White">
+                <Image ClassId="1" Source="agricola.png" Grid.Row="0" Grid.Column="1" BackgroundColor="White" IsVisible="False" x:Name="ImageAgricola">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTapped"/>
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image ClassId="2" Source="obra.png" Grid.Row="0" Grid.Column="2" BackgroundColor="White">
+                <Image ClassId="2" Source="obra.png" Grid.Row="0" Grid.Column="2" BackgroundColor="White" IsVisible="False" x:Name="ImageObra">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTapped"/>
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image ClassId="3" Source="persona.png" Grid.Row="0" Grid.Column="3" BackgroundColor="White">
+                <Image ClassId="3" Source="persona.png" Grid.Row="0" Grid.Column="3" BackgroundColor="White" IsVisible="False" x:Name="ImagePersona">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTapped"/>
                     </Image.GestureRecognizers>
                 </Image>
 
-                <Image ClassId="4" Source="otro.png" Grid.Row="0" Grid.Column="4" BackgroundColor="White">
+                <Image ClassId="4" Source="otro.png" Grid.Row="0" Grid.Column="4" BackgroundColor="White" IsVisible="False" x:Name="ImageOtro">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTapped"/>
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
+
+            <Button Text="Modo vehículo lento" Grid.Row="1" Grid.Column="0" x:Name="GoSlow" BackgroundColor="#e7615b" TextColor="White" Font="Bold,20" BorderRadius="20" Margin="10"/>
+
         </Grid>
     </StackLayout>
 </ContentPage>

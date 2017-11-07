@@ -52,7 +52,7 @@ namespace SecureTraffic
             }
             catch
             {
-
+                InicializarMapa();
             }
         }
 
