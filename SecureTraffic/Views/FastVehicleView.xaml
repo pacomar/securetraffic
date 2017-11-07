@@ -19,6 +19,8 @@
                     x:Name="MyMap"
                     IsShowingUser="true"
                     MapType="Street"
+					HasZoomEnabled="true"
+					HasScrollEnabled="true"
                 />
 
                 <Image Source="alerta.png" BackgroundColor="Transparent" AbsoluteLayout.LayoutBounds=".9,0.15,0.25,0.25" AbsoluteLayout.LayoutFlags="All" IsVisible="False" x:Name="ImageAlert">

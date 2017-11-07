@@ -5,7 +5,7 @@ namespace SecureTraffic
 {
 	public class ServiceBase
 	{
-		public static FirebaseClient firebase = new FirebaseClient("https://securetraffic-f6abc.firebaseio.com");
+		public static FirebaseClient firebase = new FirebaseClient("https://securtraffic-49c23.firebaseio.com");
 
 		public ServiceBase()
 		{

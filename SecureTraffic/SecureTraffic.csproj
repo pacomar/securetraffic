@@ -84,6 +84,9 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Models\MyVehicle.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Services\GoogleServices.cs" />
+    <Compile Include="ViewModels\GoogleViewModel.cs" />
+    <Compile Include="Models\GoogleProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Android">

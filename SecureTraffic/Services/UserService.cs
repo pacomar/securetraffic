@@ -10,7 +10,7 @@ namespace SecureTraffic
 
 		public UserService()
 		{
-            this._authProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyAacfnIMLhrzOLUKAE4cZ-GvWJR1v1OiQM"));
+            this._authProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyBqQNY_fYsywexh4-NMniGdxT_6lNp6Pgs"));
 		}
 
 		public async Task<FirebaseAuthLink> RegisterUser(string email, string password)
@@ -32,7 +32,7 @@ namespace SecureTraffic
 			FirebaseAuthLink auth = null;
 			try
 			{
-				auth = await this._authProvider.CreateUserWithEmailAndPasswordAsync("","");
+				auth = await this._authProvider.SignInWithOAuthAsync(FirebaseAuthType.Google,"448189929340-egnqj2s3hkvfb0v4qi6hdaugl97nu85m.apps.googleusercontent.com");
 			}
 			catch (Exception ex)
 			{
@@ -55,12 +55,12 @@ namespace SecureTraffic
 			return auth;
 		}
 
-		public async Task<FirebaseAuthLink> LoginUserGoogle()
+		public async Task<FirebaseAuthLink> LoginUserGoogle(string token)
 		{
 			FirebaseAuthLink auth = null;
 			try
 			{
-				auth = await this._authProvider.SignInAnonymouslyAsync();
+				auth = await this._authProvider.SignInWithOAuthAsync(FirebaseAuthType.Google,token);
 			}
 			catch (Exception ex)
 			{
@@ -69,12 +69,12 @@ namespace SecureTraffic
 			return auth;
 		}
 
-		public async Task<FirebaseAuthLink> LoginUserFacebook()
+		public async Task<FirebaseAuthLink> LoginUserFacebook(string token)
 		{
 			FirebaseAuthLink auth = null;
 			try
 			{
-				auth = await this._authProvider.SignInAnonymouslyAsync();
+				auth = await this._authProvider.SignInWithOAuthAsync(FirebaseAuthType.Facebook,token);
 			}
 			catch (Exception ex)
 			{

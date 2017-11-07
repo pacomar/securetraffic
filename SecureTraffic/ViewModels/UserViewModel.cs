@@ -43,11 +43,11 @@ namespace SecureTraffic
 			return res;
 		}
 
-		public async Task<bool> LoginUserGoogle()
+		public async Task<bool> LoginUserGoogle(string token)
 		{
 			bool res = false;
 
-			FirebaseAuthLink auth = await this._userService.LoginUserGoogle();
+			FirebaseAuthLink auth = await this._userService.LoginUserGoogle(token);
 
 			if (auth != null)
 			{
@@ -59,11 +59,11 @@ namespace SecureTraffic
 			return res;
 		}
 
-		public async Task<bool> LoginUserFacebook()
+		public async Task<bool> LoginUserFacebook(string token)
 		{
 			bool res = false;
 
-			FirebaseAuthLink auth = await this._userService.LoginUserFacebook();
+			FirebaseAuthLink auth = await this._userService.LoginUserFacebook(token);
 
 			if (auth != null)
 			{

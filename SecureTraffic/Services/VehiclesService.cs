@@ -58,7 +58,7 @@ namespace SecureTraffic
 
                 int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
                 var aux = items.Where(veh => (
-                    (timestamp - long.Parse(veh.Object.Time)) < 300) &&
+                    (timestamp - long.Parse(veh.Object.Time)) < 30) &&
                       veh.Key != App.guid.ToString());
 
                 return aux;
@@ -73,7 +73,7 @@ namespace SecureTraffic
 
                 int timestamp = Helper.ConvertToTimestamp(DateTime.Now);
                 var aux = items.Where(veh => (
-                    (timestamp - long.Parse(veh.Object.Time)) < 300) &&
+                    (timestamp - long.Parse(veh.Object.Time)) < 30) &&
                       veh.Key != App.guid.ToString());
 
                 return aux;

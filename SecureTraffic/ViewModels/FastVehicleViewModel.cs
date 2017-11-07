@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -23,18 +23,18 @@ namespace SecureTraffic
         private Position myLastPosition;
         private int alertDistance = 1000;
         private int distancePosibleAlert = 1200;
-        private Image imagen { get; set; }
+        private Xamarin.Forms.Image imagen { get; set; }
         private Label distanceLabel { get; set; }
 
-        private Image imagen2 { get; set; }
+        private Xamarin.Forms.Image imagen2 { get; set; }
         private Label distanceLabel2 { get; set; }
 
-        private Image imagen3 { get; set; }
+        private Xamarin.Forms.Image imagen3 { get; set; }
         private Label distanceLabel3 { get; set; }
 
         private List<Alerta> alertas = new List<Alerta>();
 
-        public FastVehicleViewModel(Map _map, Image imagen, Label distanceLabel, Image imagen2, Label distanceLabel2, Image imagen3, Label distanceLabel3)
+        public FastVehicleViewModel(Map _map, Xamarin.Forms.Image imagen, Label distanceLabel, Xamarin.Forms.Image imagen2, Label distanceLabel2, Xamarin.Forms.Image imagen3, Label distanceLabel3)
         {
             try
             {

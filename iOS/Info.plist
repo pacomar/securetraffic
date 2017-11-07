@@ -46,5 +46,10 @@
 	<string>Monitorizar tu posicion</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Monitorizar su posicion</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>fetch</string>
+	</array>
 </dict>
 </plist>
