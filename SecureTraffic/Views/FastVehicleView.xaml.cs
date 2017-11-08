@@ -20,6 +20,7 @@ namespace SecureTraffic
 
             GoSlow.Clicked += async (sender, args) =>
             {
+                GoSlow.IsVisible = false;
                 ImageBici.IsVisible = true;
                 ImageAgricola.IsVisible = true;
                 ImageObra.IsVisible = true;

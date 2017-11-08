@@ -88,7 +88,12 @@ namespace SecureTraffic
             }
 		}
 
-		private async void WebViewOnNavigatedGoogle(object sender, WebNavigatedEventArgs e)
+        public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
+        {
+            await Navigation.PushAsync(new TerminosWebView());
+        }
+
+        private async void WebViewOnNavigatedGoogle(object sender, WebNavigatedEventArgs e)
 		{
 
 			var code = ExtractCodeFromUrlGoogle(e.Url);
