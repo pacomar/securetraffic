@@ -5,7 +5,6 @@ using System.Linq;
 using SecureTraffic.ViewModels;
 using Xamarin.Forms;
 using static Xamarin.Forms.Device;
-using SecureTraffic.Views;
 
 namespace SecureTraffic
 {
