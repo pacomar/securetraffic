@@ -9,12 +9,13 @@ using Xamarin.Forms.Xaml;
 
 namespace SecureTraffic.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TerminosWebView : ContentView
+    public partial class TerminosWebView : ContentPage
     {
         public TerminosWebView()
         {
             InitializeComponent();
+
+            this.Title = "TERMINOS Y CONDICIONES";
         }
     }
 }
