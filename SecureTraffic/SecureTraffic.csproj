@@ -87,9 +87,6 @@
     <Compile Include="Services\GoogleServices.cs" />
     <Compile Include="ViewModels\GoogleViewModel.cs" />
     <Compile Include="Models\GoogleProfile.cs" />
-    <Compile Include="Views\TerminosWebView.xaml.cs">
-      <DependentUpon>TerminosWebView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Android">
@@ -162,12 +159,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>
       </SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\TerminosWebView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

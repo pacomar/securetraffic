@@ -91,7 +91,7 @@ namespace SecureTraffic
 
         public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new TerminosWebView());
+            Device.OpenUri(new Uri("https://securtraffic-49c23.firebaseapp.com/"));
         }
 
         private async void WebViewOnNavigatedGoogle(object sender, WebNavigatedEventArgs e)
