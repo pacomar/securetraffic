@@ -21,12 +21,12 @@
 			<Button Text="Register" x:Name="GoRegister" BackgroundColor="#fe8627" TextColor="White" Font="Bold,20" BorderRadius="20"/>
 			<Button Text="Google" x:Name="DoLoginGoogle" BackgroundColor="#cf4332" TextColor="White" Font="Bold,20" BorderRadius="20"/>
 			<Button Text="Facebook" x:Name="DoLoginFacebook" BackgroundColor="#3c66c4" TextColor="White" Font="Bold,20" BorderRadius="20"/>
-            <Label Text="Terminos y condiciones" x:Name="DoTerminos" HorizontalTextAlignment="Center" Font="light,10" FontFamily="Futura" >
+            <!--<Label Text="Terminos y condiciones" x:Name="DoTerminos" HorizontalTextAlignment="Center" Font="light,10" FontFamily="Futura" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer
                             Tapped="OnTapGestureRecognizerTapped"/>
                 </Label.GestureRecognizers>
-            </Label>
+            </Label>-->
 		</StackLayout>
 	</AbsoluteLayout>
 </ContentPage>

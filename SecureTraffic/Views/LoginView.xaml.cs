@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -88,10 +88,17 @@ namespace SecureTraffic
             }
 		}
 
+<<<<<<< HEAD
         public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
         {
             Device.OpenUri(new Uri("https://securtraffic-49c23.firebaseapp.com/"));
         }
+=======
+        //public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
+        //{
+		//	await Navigation.PushModalAsync(new NavigationPage(new TerminosWebView()));
+        //}
+>>>>>>> e3dcb76... resolucion de incidencias para app store
 
         private async void WebViewOnNavigatedGoogle(object sender, WebNavigatedEventArgs e)
 		{

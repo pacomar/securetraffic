@@ -50,7 +50,7 @@ namespace SecureTraffic
 
                 this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
             }
-            catch
+            catch(Exception ex)
             {
                 InicializarMapa();
             }

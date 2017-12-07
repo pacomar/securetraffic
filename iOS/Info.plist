@@ -9,9 +9,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.securtraffic</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.5</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.0.5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -43,13 +43,15 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Monitorizar tu posicion</string>
+	<string>Get your position to show slow vehicles near and send your position if you are slow vehicle to other fast vehicles.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Monitorizar su posicion</string>
+	<string>Get your position to show slow vehicles near and send your position if you are slow vehicle to other fast vehicles.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
 		<string>fetch</string>
 	</array>
+	<key>Custom Property</key>
+	<string></string>
 </dict>
 </plist>

@@ -30,9 +30,20 @@ namespace SecureTraffic
 
             var locator = CrossGeolocator.Current;
 
-            if (!locator.IsGeolocationAvailable && !locator.IsGeolocationEnabled) DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");
+            if (!locator.IsGeolocationAvailable || !locator.IsGeolocationEnabled){
+                GoSlow.IsVisible = false;
+                ImageBici.IsVisible = false;
+                ImageAgricola.IsVisible = false;
+                ImageObra.IsVisible = false;
+                ImagePersona.IsVisible = false;
+                ImageOtro.IsVisible = false;
+                Device.BeginInvokeOnMainThread(async () => {
+                    await DisplayAlert("Aviso", "Habilita el GPS para poder usar la aplicación.", "OK");
+                });
+            }else{                
+                BindingContext = new FastVehicleViewModel(MyMap, ImageAlert, TextDistance, ImageAlert2, TextDistance2, ImageAlert3, TextDistance3);
+            }
 
-            BindingContext = new FastVehicleViewModel(MyMap, ImageAlert, TextDistance, ImageAlert2, TextDistance2, ImageAlert3, TextDistance3);
         }
 
         public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)

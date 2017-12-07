@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using Plugin.Geolocator;
 
 namespace SecureTraffic
 {
@@ -19,7 +20,13 @@ namespace SecureTraffic
             var message = new StartLongRunningTaskMessage();
             MessagingCenter.Send(message, "StartLongRunningTaskMessage");
 
-            BindingContext = new SlowVehicleViewModel(veh, MyMap);
+            var locator = CrossGeolocator.Current;
+            if (!locator.IsGeolocationAvailable || !locator.IsGeolocationEnabled){
+                DisplayAlert("Aviso", "Por favor, habilita el GPS", "OK");  
+            }
+            else{
+                BindingContext = new SlowVehicleViewModel(veh, MyMap);
+            }
         }
         protected override bool OnBackButtonPressed()
         {

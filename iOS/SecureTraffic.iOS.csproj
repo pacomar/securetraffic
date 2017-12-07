@@ -9,6 +9,7 @@
     <RootNamespace>SecureTraffic.iOS</RootNamespace>
     <AssemblyName>SecureTraffic.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <Description>Visualización y retransmision de vehiculos lentos cercanos.</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +32,7 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -71,7 +72,7 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchFastDev>true</MtouchFastDev>
-    <MtouchProfiling>true</MtouchProfiling>
+    <MtouchProfiling>false</MtouchProfiling>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <IOSDebuggerPort>16032</IOSDebuggerPort>
@@ -136,6 +137,25 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-72x72%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iTunesArtwork%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iTunesArtwork%401x.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -164,9 +184,35 @@
     <BundleResource Include="Resources\persona.png" />
     <BundleResource Include="Resources\settings.png" />
     <BundleResource Include="Resources\splash_screen.png" />
-    <BundleResource Include="Resources\login-background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </BundleResource>
+    <BundleResource Include="Resources\Icon-App-20x20%401x.png" />
+    <BundleResource Include="Resources\Icon-App-20x20%402x.png" />
+    <BundleResource Include="Resources\Icon-App-20x20%403x.png" />
+    <BundleResource Include="Resources\Icon-App-29x29%401x.png" />
+    <BundleResource Include="Resources\Icon-App-29x29%403x.png" />
+    <BundleResource Include="Resources\Icon-App-40x40%401x.png" />
+    <BundleResource Include="Resources\Icon-App-40x40%402x.png" />
+    <BundleResource Include="Resources\Icon-App-40x40%403x.png" />
+    <BundleResource Include="Resources\Icon-App-57x57%401x.png" />
+    <BundleResource Include="Resources\Icon-App-57x57%402x.png" />
+    <BundleResource Include="Resources\Icon-App-60x60%401x.png" />
+    <BundleResource Include="Resources\Icon-App-60x60%402x.png" />
+    <BundleResource Include="Resources\Icon-App-60x60%403x.png" />
+    <BundleResource Include="Resources\Icon-App-72x72%401x.png" />
+    <BundleResource Include="Resources\Icon-App-72x72%402x.png" />
+    <BundleResource Include="Resources\Icon-App-76x76%401x.png" />
+    <BundleResource Include="Resources\Icon-App-76x76%402x.png" />
+    <BundleResource Include="Resources\Icon-App-76x76%403x.png" />
+    <BundleResource Include="Resources\Icon-App-83.5x83.5%402x.png" />
+    <BundleResource Include="Resources\Icon-Small-50x50%401x.png" />
+    <BundleResource Include="Resources\Icon-Small-50x50%402x.png" />
+    <BundleResource Include="Resources\ItunesArtwork%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\login-background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ITunesArtwork Include="iTunesArtwork" />
+    <ITunesArtwork Include="iTunesArtwork%402x" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
