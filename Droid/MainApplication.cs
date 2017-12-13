@@ -24,8 +24,9 @@ namespace SecureTraffic.Droid
 
             Forms.Init(this, bundle);
 
-            LoadApplication(new App());
             WireUpLongRunningTask();
+
+            LoadApplication(new App());
         }
 
         void WireUpLongRunningTask()

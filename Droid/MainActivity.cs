@@ -9,6 +9,8 @@ using Android.Widget;
 using Android.OS;
 using Android.Locations;
 using Xamarin.Forms;
+using SecureTraffic.Messages;
+using SecureTraffic.Droid.Services;
 
 namespace SecureTraffic.Droid
 {
@@ -42,11 +44,29 @@ namespace SecureTraffic.Droid
             //        UIApplication.SharedApplication.OpenUrl(url);
             //    }
             //}
+            WireUpLongRunningTask();
 
             LoadApplication(new App());
 		}
 
-		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+
+        void WireUpLongRunningTask()
+        {
+            MessagingCenter.Subscribe<StartLongRunningTaskMessage>(this, "StartLongRunningTaskMessage", message =>
+            {
+                var intent = new Intent(this, typeof(LongRunningTaskService));
+                StartService(intent);
+            });
+
+            MessagingCenter.Subscribe<StopLongRunningTaskMessage>(this, "StopLongRunningTaskMessage", message =>
+            {
+                var intent = new Intent(this, typeof(LongRunningTaskService));
+                StopService(intent);
+            });
+        }
+
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
 		{
 			Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
