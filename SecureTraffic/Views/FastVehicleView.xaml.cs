@@ -28,21 +28,35 @@ namespace SecureTraffic
                 ImageOtro.IsVisible = true;
             };
 
-            var locator = CrossGeolocator.Current;
+            try
+            {
+                var locator = CrossGeolocator.Current;
 
-            if (!locator.IsGeolocationAvailable || !locator.IsGeolocationEnabled){
-                GoSlow.IsVisible = false;
-                ImageBici.IsVisible = false;
-                ImageAgricola.IsVisible = false;
-                ImageObra.IsVisible = false;
-                ImagePersona.IsVisible = false;
-                ImageOtro.IsVisible = false;
+                if (!locator.IsGeolocationAvailable || !locator.IsGeolocationEnabled)
+                {
+                    GoSlow.IsVisible = false;
+                    ImageBici.IsVisible = false;
+                    ImageAgricola.IsVisible = false;
+                    ImageObra.IsVisible = false;
+                    ImagePersona.IsVisible = false;
+                    ImageOtro.IsVisible = false;
+                    Device.BeginInvokeOnMainThread(async () => {
+                        await DisplayAlert("Aviso", "Habilita el GPS para poder usar la aplicación.", "OK");
+                    });
+                }
+                else
+                {
+                    BindingContext = new FastVehicleViewModel(MyMap, ImageAlert, TextDistance, ImageAlert2, TextDistance2, ImageAlert3, TextDistance3);
+                }
+            }
+            catch
+            {
                 Device.BeginInvokeOnMainThread(async () => {
-                    await DisplayAlert("Aviso", "Habilita el GPS para poder usar la aplicación.", "OK");
+                    await DisplayAlert("Aviso", "Necesitas darle permisos a la aplicación", "OK");
                 });
-            }else{                
                 BindingContext = new FastVehicleViewModel(MyMap, ImageAlert, TextDistance, ImageAlert2, TextDistance2, ImageAlert3, TextDistance3);
             }
+            
 
         }
 
