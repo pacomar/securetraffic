@@ -22,7 +22,7 @@ namespace SecureTraffic
 				}
 				else
 				{
-					await DisplayAlert("Alert", "Los datos son ivalidos", "OK");
+					await DisplayAlert("Alert", "Usuario ya registrado", "OK");
 					email.Text = "";
 					password.Text = "";
 				}
