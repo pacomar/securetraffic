@@ -44,24 +44,32 @@ namespace SecureTraffic
 
                 DoLoginGoogle.Clicked += (sender, args) =>
                 {
-					_googleViewModel = BindingContext as GoogleViewModel;
+                    var authRequest =
+                    "https://accounts.google.com/o/oauth2/v2/auth"
+                    + "?response_type=code"
+                    + "&scope=openid"
+                    + "&redirect_uri=" + "https://securtraffic-49c23.firebaseapp.com/__/auth/handler"
+                    + "&client_id=" + "448189929340-egnqj2s3hkvfb0v4qi6hdaugl97nu85m.apps.googleusercontent.com";
 
-					var authRequest =
-					"https://accounts.google.com/o/oauth2/v2/auth"
-					+ "?response_type=code"
-					+ "&scope=openid"
-					+ "&redirect_uri=" + "https://securtraffic-49c23.firebaseapp.com/__/auth/handler"
-					+ "&client_id=" + "448189929340-egnqj2s3hkvfb0v4qi6hdaugl97nu85m.apps.googleusercontent.com";
+                    Device.OpenUri(new Uri(authRequest));
+     //               _googleViewModel = BindingContext as GoogleViewModel;
 
-					var webView = new WebView
-					{
-						Source = authRequest,
-						HeightRequest = 1
-					};
+					//var authRequest =
+					//"https://accounts.google.com/o/oauth2/v2/auth"
+					//+ "?response_type=code"
+					//+ "&scope=openid"
+					//+ "&redirect_uri=" + "https://securtraffic-49c23.firebaseapp.com/__/auth/handler"
+					//+ "&client_id=" + "448189929340-egnqj2s3hkvfb0v4qi6hdaugl97nu85m.apps.googleusercontent.com";
 
-					webView.Navigated += WebViewOnNavigatedGoogle;
+					//var webView = new WebView
+					//{
+					//	Source = authRequest,
+					//	HeightRequest = 1
+					//};
 
-					Content = webView;
+					//webView.Navigated += WebViewOnNavigatedGoogle;
+
+					//Content = webView;
                 };
 
                 DoLoginFacebook.Clicked += (sender, args) =>
