@@ -1,4 +1,6 @@
 ﻿using Plugin.Geolocator;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using System;
 using Xamarin.Forms;
 
@@ -6,7 +8,7 @@ namespace SecureTraffic
 {
     public partial class FastVehicleView : ContentPage
     {
-        public FastVehicleView()
+        public  FastVehicleView()
         {
             InitializeComponent();
 
@@ -31,6 +33,13 @@ namespace SecureTraffic
             try
             {
                 var locator = CrossGeolocator.Current;
+                var status = CrossPermissions.Current.CheckPermissionStatusAsync(Plugin.Permissions.Abstractions.Permission.Location);
+
+                if (status.Result != PermissionStatus.Granted)
+                {
+                    var results = CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                    var statusbuffer = results.Result[Permission.Location];
+                }
 
                 if (!locator.IsGeolocationAvailable || !locator.IsGeolocationEnabled)
                 {
