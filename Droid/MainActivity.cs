@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using SecureTraffic.Messages;
 using SecureTraffic.Droid.Services;
 using Plugin.Permissions;
+using Plugin.CurrentActivity;
 
 namespace SecureTraffic.Droid
 {
@@ -19,8 +20,8 @@ namespace SecureTraffic.Droid
 			ToolbarResource = Resource.Layout.Toolbar;
 
 			base.OnCreate(bundle);
-
-			global::Xamarin.Forms.Forms.Init(this, bundle);
+            CrossCurrentActivity.Current.Activity = this;
+            global::Xamarin.Forms.Forms.Init(this, bundle);
 
             //LocationManager locationManager = (LocationManager)Forms.Context.GetSystemService(Context.LocationService);
 

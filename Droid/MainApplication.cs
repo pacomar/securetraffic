@@ -21,7 +21,7 @@ namespace SecureTraffic.Droid
             base.OnCreate(bundle);
             //RegisterActivityLifecycleCallbacks(this);
             //A great place to initialize Xamarin.Insights and Dependency Services!
-
+            CrossCurrentActivity.Current.Activity = this;
             Forms.Init(this, bundle);
 
             WireUpLongRunningTask();
