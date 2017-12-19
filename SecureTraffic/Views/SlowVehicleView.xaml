@@ -22,16 +22,9 @@
                 />
 
             </AbsoluteLayout>
-            <Grid Grid.Row="1" Grid.Column="0" RowSpacing="0" ColumnSpacing="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Label Text="Esta aplicación puede correr en segundo plano, lo que significa que puedes bloquear el teléfono para ahorrar batería" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="0" Margin="15"/>
-            </Grid>
+            <StackLayout Grid.Row="1" Grid.Column="0">
+                <Label Text="Esta aplicación puede correr en segundo plano, lo que significa que puedes bloquear el teléfono para ahorrar batería" HorizontalTextAlignment="Start"  Margin="15"/>
+            </StackLayout>
         </Grid>
     </StackLayout>
 </ContentPage>
