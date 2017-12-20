@@ -7,6 +7,7 @@ using UIKit;
 using SecureTraffic.iOS.Services;
 using Xamarin.Forms;
 using SecureTraffic.Messages;
+using SecureTraffic.Google;
 
 namespace SecureTraffic.iOS
 {
@@ -23,6 +24,7 @@ namespace SecureTraffic.iOS
 			NSUserDefaults.StandardUserDefaults.RegisterDefaults(dictionary);
 
             global::Xamarin.Forms.Forms.Init();
+            global::Xamarin.Auth.Presenters.XamarinIOS.AuthenticationConfiguration.Init();
 
             Xamarin.FormsMaps.Init();
 
@@ -35,6 +37,17 @@ namespace SecureTraffic.iOS
 
         #region Methods
         iOSLongRunningTaskExample longRunningTaskExample;
+
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            // Convert NSUrl to Uri
+            var uri = new Uri(url.AbsoluteString);
+
+            // Load redirectUrl page
+            AuthenticationState.Authenticator.OnPageLoading(uri);
+
+            return true;
+        }
 
         void WireUpLongRunningTask()
         {

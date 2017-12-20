@@ -21,6 +21,7 @@ namespace SecureTraffic.Droid
 
 			base.OnCreate(bundle);
             CrossCurrentActivity.Current.Activity = this;
+            global::Xamarin.Auth.Presenters.XamarinAndroid.AuthenticationConfiguration.Init(this, bundle);
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             //LocationManager locationManager = (LocationManager)Forms.Context.GetSystemService(Context.LocationService);

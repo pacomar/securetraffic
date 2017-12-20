@@ -8,18 +8,26 @@ using Plugin.Permissions.Abstractions;
 using SecureTraffic.ViewModels;
 using Xamarin.Forms;
 using static Xamarin.Forms.Device;
+using SecureTraffic.Google;
+using Xamarin.Auth;
+using Newtonsoft.Json;
 
 namespace SecureTraffic
 {
 	public partial class LoginView : ContentPage
 	{
 		private GoogleViewModel _googleViewModel { get; set; }
-
-		public LoginView()
+        Account account;
+        AccountStore store;
+        public LoginView()
 		{
             try
             {
+
                 InitializeComponent();
+
+                store = AccountStore.Create();
+                account = store.FindAccountsForService(Constants.AppName).FirstOrDefault();
 
                 this.Title = "Login";
 
@@ -61,32 +69,47 @@ namespace SecureTraffic
                     bool comprobarPermisos = await ComprobarPermisos();
                     if (comprobarPermisos)
                     {
-                        //    var authRequest =
-                        //"https://accounts.google.com/o/oauth2/v2/auth"
-                        //+ "?response_type=code"
-                        //+ "&scope=openid"
-                        //+ "&redirect_uri=" + "https://securtraffic-49c23.firebaseapp.com/__/auth/handler"
-                        //+ "&client_id=" + "448189929340-egnqj2s3hkvfb0v4qi6hdaugl97nu85m.apps.googleusercontent.com";
+                        string clientId = null;
+                        string redirectUri = null;
 
-                        //Device.OpenUri(new Uri(authRequest));
-                        _googleViewModel = BindingContext as GoogleViewModel;
-
-                        var authRequest =
-                        "https://accounts.google.com/o/oauth2/v2/auth"
-                        + "?response_type=code"
-                        + "&scope=openid"
-                        + "&redirect_uri=" + "https://securtraffic-49c23.firebaseapp.com/__/auth/handler"
-                        + "&client_id=" + "448189929340-egnqj2s3hkvfb0v4qi6hdaugl97nu85m.apps.googleusercontent.com";
-
-                        var webView = new WebView
+                        switch (Device.RuntimePlatform)
                         {
-                            Source = authRequest,
-                            HeightRequest = 1
-                        };
+                            case Device.iOS:
+                                clientId = Constants.iOSClientId;
+                                redirectUri = Constants.iOSRedirectUrl;
+                                break;
 
-                        webView.Navigated += WebViewOnNavigatedGoogle;
+                            case Device.Android:
+                                clientId = Constants.AndroidClientId;
+                                redirectUri = Constants.AndroidRedirectUrl;
+                                break;
+                        }
 
-                        Content = webView;
+                        try
+                        {
+                            var authenticator = new OAuth2Authenticator(
+                                clientId,
+                                null,
+                                Constants.Scope,
+                                new Uri(Constants.AuthorizeUrl),
+                                new Uri(redirectUri),
+                                new Uri(Constants.AccessTokenUrl),
+                                null,
+                                true);
+
+                            authenticator.Completed += OnAuthCompleted;
+                            authenticator.Error += OnAuthError;
+
+                            AuthenticationState.Authenticator = authenticator;
+
+                            var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
+                            presenter.Login(authenticator);
+                        }
+                        catch (Exception ex)
+                        {
+                            await DisplayAlert("Error", "No se ha podido hacer login con GOOGLE", "OK");
+                        }
+
                     }
                     };
 
@@ -152,7 +175,68 @@ namespace SecureTraffic
                 return false;
             }
         }
+        async void OnAuthCompleted(object sender, AuthenticatorCompletedEventArgs e)
+        {
+            var authenticator = sender as OAuth2Authenticator;
+            if (authenticator != null)
+            {
+                authenticator.Completed -= OnAuthCompleted;
+                authenticator.Error -= OnAuthError;
+            }
 
+            User user = null;
+            if (e.IsAuthenticated)
+            {
+                // If the user is authenticated, request their basic user data from Google
+                // UserInfoUrl = https://www.googleapis.com/oauth2/v2/userinfo
+                var request = new OAuth2Request("GET", new Uri(Constants.UserInfoUrl), null, e.Account);
+                var response = await request.GetResponseAsync();
+                if (response != null)
+                {
+                    // Deserialize the data and store it in the account store
+                    // The users email address will be used to identify data in SimpleDB
+                    string userJson = await response.GetResponseTextAsync();
+                    user = JsonConvert.DeserializeObject<User>(userJson);
+                }
+
+                bool resgisted = await new UserViewModel().RegisterUser(user.Id.ToString() + "@ssogoogle.com", e.Account.Properties["access_token"]);
+
+                bool loged = await new UserViewModel().LoginUser(user.Id.ToString() + "@ssogoogle.com", e.Account.Properties["access_token"]);
+                           
+                if (loged && resgisted)
+                {
+                    //Loadding.IsRunning = false;
+                    await Navigation.PushModalAsync(new NavigationPage(new FastVehicleView()));
+                }
+                else
+                {
+                    //Loadding.IsRunning = false;
+                    await DisplayAlert("Advertencia", "Tus datos no son correctos", "OK");
+                    password.Text = "";
+                }
+
+                if (resgisted) resgisted = await new UserViewModel().LoginUser(user.Id.ToString() + "@ssogoogle.com", e.Account.Properties["access_token"]);
+
+                if (account != null)
+                {
+                    store.Delete(account, Constants.AppName);
+                }
+
+                await store.SaveAsync(account = e.Account, Constants.AppName);
+            }
+        }
+
+        void OnAuthError(object sender, AuthenticatorErrorEventArgs e)
+        {
+            var authenticator = sender as OAuth2Authenticator;
+            if (authenticator != null)
+            {
+                authenticator.Completed -= OnAuthCompleted;
+                authenticator.Error -= OnAuthError;
+            }
+
+            Debug.WriteLine("Authentication error: " + e.Message);
+        }
         public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
         {
             Device.OpenUri(new Uri("https://securtraffic.000webhostapp.com/"));
