@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SecureTraffic",
+    "\\SecureTraffic\\Views"
   ],
   "SelectedNode": "\\SecureTraffic.sln",
   "PreviewInSolutionExplorer": false

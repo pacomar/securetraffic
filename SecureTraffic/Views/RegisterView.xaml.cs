@@ -11,18 +11,21 @@ namespace SecureTraffic
 		{
 			InitializeComponent();
 
-			BindingContext = new UserViewModel();
+            this.Title = "Registro";
+
+            BindingContext = new UserViewModel();
 
 			doRegister.Clicked += async(sender, args) =>
 			{
 				bool resgisted = await new UserViewModel().RegisterUser(email.Text, password.Text);
 				if (resgisted)
 				{
-					await Navigation.PushModalAsync(new NavigationPage(new LoginView()));
+                    await DisplayAlert("Genial!", "Registrado correctamente", "OK");
+                    await Navigation.PushModalAsync(new NavigationPage(new LoginView()));
 				}
 				else
 				{
-					await DisplayAlert("Alert", "Usuario ya registrado", "OK");
+					await DisplayAlert("Ups", "Usuario ya registrado", "OK");
 					email.Text = "";
 					password.Text = "";
 				}

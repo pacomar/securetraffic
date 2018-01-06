@@ -145,29 +145,34 @@ namespace SecureTraffic
         {
             try
             {
-                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
-                var status2 = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
-                if (status != PermissionStatus.Granted)
+                if (Device.RuntimePlatform == Device.Android)
                 {
-                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
-                    status = results[Permission.Location];
+                    var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                    var status2 = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+                    if (status != PermissionStatus.Granted)
+                    {
+                        var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                        status = results[Permission.Location];
+                    }
+
+                    if (status2 != PermissionStatus.Granted)
+                    {
+                        var results2 = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Storage);
+                        status2 = results2[Permission.Storage];
+                    }
+
+                    if (status == PermissionStatus.Granted && status2 == PermissionStatus.Granted)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        await DisplayAlert("Advertencia", "La aplicación no tiene permisos para utilizar el GPS o el Almacenamiento", "OK");
+                        return false;
+                    }
                 }
 
-                if (status2 != PermissionStatus.Granted)
-                {
-                    var results2 = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Storage);
-                    status2 = results2[Permission.Storage];
-                }
-
-                if (status == PermissionStatus.Granted && status2 == PermissionStatus.Granted)
-                {
-                    return true;
-                }
-                else
-                {
-                    await DisplayAlert("Advertencia", "La aplicación no tiene permisos para utilizar el GPS o el Almacenamiento", "OK");
-                    return false;
-                }
+                return true;
             }
             catch (Exception ex)
             {
