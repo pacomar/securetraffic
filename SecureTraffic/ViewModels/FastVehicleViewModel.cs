@@ -24,13 +24,13 @@ namespace SecureTraffic
         private int alertDistance = 1000;
         private int distancePosibleAlert = 1200;
         private Xamarin.Forms.Image imagen { get; set; }
-        private Label distanceLabel { get; set; }
+        public Label distanceLabel { get; set; }
 
         private Xamarin.Forms.Image imagen2 { get; set; }
-        private Label distanceLabel2 { get; set; }
+        public Label distanceLabel2 { get; set; }
 
         private Xamarin.Forms.Image imagen3 { get; set; }
-        private Label distanceLabel3 { get; set; }
+        public Label distanceLabel3 { get; set; }
 
         private List<Alerta> alertas = new List<Alerta>();
 
@@ -164,7 +164,12 @@ namespace SecureTraffic
                         alertasbuffer.Add(new Alerta(vehicle.Key, vehicle.Object.CurrentPosition.Vehicle, infoVehicle.distanceText, 0, TextoANumero(infoVehicle.distanceText)));
                     }
                 }
-
+                //alertasbuffer.Add(new Alerta("1", new Vehicle(), "300 m", 0, 300));
+                //alertasbuffer.Add(new Alerta("2", new Vehicle(), "350 m", 0, 350));
+                //alertasbuffer.Add(new Alerta("3", new Vehicle(), "360 m", 0, 360));
+                //alertasbuffer.Add(new Alerta("4", new Vehicle(), "300 m", 0, 300));
+                //alertasbuffer.Add(new Alerta("5", new Vehicle(), "300 m", 0, 300));
+                //alertasbuffer.Add(new Alerta("6", new Vehicle(), "300 m", 0, 300));
                 alertas = CompararAlertasGuardadasVsNuevas(alertasbuffer);
 
                 if (alertas.Count > 0) Alertar(alertas);
@@ -443,7 +448,7 @@ namespace SecureTraffic
                             {
                                 if (settings.imagen)
                                 {
-                                    switch (alertas.ToArray()[0].vehiculo)
+                                    switch (SortedList.ToArray()[0].vehiculo)
                                     {
                                         case Vehicle.Agricola:
                                             imagen.Source = "agricola.png";
@@ -484,22 +489,22 @@ namespace SecureTraffic
                             {
                                 if (settings.imagen)
                                 {
-                                    switch (alertas.ToArray()[0].vehiculo)
+                                    switch (SortedList.ToArray()[1].vehiculo)
                                     {
                                         case Vehicle.Agricola:
-                                            imagen.Source = "agricola.png";
+                                            imagen2.Source = "agricola.png";
                                             break;
                                         case Vehicle.Bici:
-                                            imagen.Source = "bici.png";
+                                            imagen2.Source = "bici.png";
                                             break;
                                         case Vehicle.Obra:
-                                            imagen.Source = "obra.png";
+                                            imagen2.Source = "obra.png";
                                             break;
                                         case Vehicle.Otro:
-                                            imagen.Source = "otro.png";
+                                            imagen2.Source = "otro.png";
                                             break;
                                         case Vehicle.Persona:
-                                            imagen.Source = "persona.png";
+                                            imagen2.Source = "persona.png";
                                             break;
                                     }
 
@@ -525,22 +530,22 @@ namespace SecureTraffic
                             {
                                 if (settings.imagen)
                                 {
-                                    switch (alertas.ToArray()[0].vehiculo)
+                                    switch (SortedList.ToArray()[2].vehiculo)
                                     {
                                         case Vehicle.Agricola:
-                                            imagen.Source = "agricola.png";
+                                            imagen3.Source = "agricola.png";
                                             break;
                                         case Vehicle.Bici:
-                                            imagen.Source = "bici.png";
+                                            imagen3.Source = "bici.png";
                                             break;
                                         case Vehicle.Obra:
-                                            imagen.Source = "obra.png";
+                                            imagen3.Source = "obra.png";
                                             break;
                                         case Vehicle.Otro:
-                                            imagen.Source = "otro.png";
+                                            imagen3.Source = "otro.png";
                                             break;
                                         case Vehicle.Persona:
-                                            imagen.Source = "persona.png";
+                                            imagen3.Source = "persona.png";
                                             break;
                                     }
 
@@ -587,8 +592,8 @@ namespace SecureTraffic
                     imagen2.IsVisible = false;
                     distanceLabel2.IsVisible = false;
 
-                    imagen2.IsVisible = false;
-                    distanceLabel2.IsVisible = false;
+                    imagen3.IsVisible = false;
+                    distanceLabel3.IsVisible = false;
                 }
                 if (settings.color)
                 {

@@ -12,25 +12,33 @@ namespace SecureTraffic
     {
         public async Task RunCounter(CancellationToken token)
         {
-            await Task.Run(async () => {
+            try
+            {
+                await Task.Run(async () => {
 
-                for (long i = 0; i < long.MaxValue; i++)
-                {
-                    token.ThrowIfCancellationRequested();
-
-                    await Task.Delay(5000);
-                    var message = new TickedMessage
+                    for (long i = 0; i < long.MaxValue; i++)
                     {
-                        Message = i.ToString()
-                    };
+                        token.ThrowIfCancellationRequested();
 
-                    AvisarSoyLento(Vehicle.Otro);
+                        await Task.Delay(5000);
+                        var message = new TickedMessage
+                        {
+                            Message = i.ToString()
+                        };
 
-                    Device.BeginInvokeOnMainThread(() => {
-                        MessagingCenter.Send<TickedMessage>(message, "TickedMessage");
-                    });
-                }
-            }, token);
+                        AvisarSoyLento(Vehicle.Otro);
+
+                        Device.BeginInvokeOnMainThread(() => {
+                            MessagingCenter.Send<TickedMessage>(message, "TickedMessage");
+                        });
+                    }
+                }, token);
+            }
+            catch (Exception ex)
+            {
+                RunCounter(token);
+            }
+
         }
 
         public async void AvisarSoyLento(Vehicle vehiculo)

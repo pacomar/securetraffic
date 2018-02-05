@@ -20,9 +20,9 @@ namespace SecureTraffic.Models
 
         public Alerta(String identificador, Vehicle vehiculo, String distanciaTexto, int contador, int distancia)
         {
-            this.identificador = this.identificador;
-            this.vehiculo = this.vehiculo;
-            this.distanciaTexto = this.distanciaTexto;
+            this.identificador = identificador;
+            this.vehiculo = vehiculo;
+            this.distanciaTexto = distanciaTexto;
             this.contador = contador;
 
             this.distancia = distancia;

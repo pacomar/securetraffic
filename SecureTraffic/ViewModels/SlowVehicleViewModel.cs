@@ -108,7 +108,6 @@ namespace SecureTraffic
                 this._altitude = position.Altitude.ToString();
                 this._altitudeAccuracy = position.AltitudeAccuracy.ToString();
 
-
                 RaisePropertyChanged("Position");
                 RaisePropertyChanged("Time");
                 RaisePropertyChanged("Heading");
@@ -117,45 +116,49 @@ namespace SecureTraffic
                 RaisePropertyChanged("Altitude");
                 RaisePropertyChanged("AltitudeAccuracy");
 
-                await locator.StartListeningAsync(500, 1, false);
+                if (!locator.IsListening)
+                {
+                    await locator.StartListeningAsync(500, 1, false);
 
-                locator.PositionChanged += async (sender, e) => {
-                    position = e.Position;
-
-                    VehiclesService _vehServ = new VehiclesService();
-
-                    //TODO map e to My position
-                    MyPosition aux = new MyPosition()
+                    locator.PositionChanged += async (sender, e) =>
                     {
-                        Coordinate = new Coordinate(e.Position.Latitude, e.Position.Longitude),
-                        Speed = e.Position.Speed,
-                        Vehicle = _vehicle,
-                        Time = Helper.ConvertToTimestamp(DateTime.Now).ToString()
+                        position = e.Position;
+
+                        VehiclesService _vehServ = new VehiclesService();
+
+                        //TODO map e to My position
+                        MyPosition aux = new MyPosition()
+                        {
+                            Coordinate = new Coordinate(e.Position.Latitude, e.Position.Longitude),
+                            Speed = e.Position.Speed,
+                            Vehicle = _vehicle,
+                            Time = Helper.ConvertToTimestamp(DateTime.Now).ToString()
+                        };
+                        this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
+                        await _vehServ.SetPositionVehicle(aux);
+
+
+                        this._position = "Lat: " + position.Latitude.ToString() + " Long: " + position.Longitude.ToString();
+                        this._time = position.Timestamp.ToString();
+                        this._heading = position.Heading.ToString();
+                        this._speed = position.Speed.ToString();
+                        this._accuracy = position.Accuracy.ToString();
+                        this._altitude = position.Altitude.ToString();
+                        this._altitudeAccuracy = position.AltitudeAccuracy.ToString();
+
+
+                        RaisePropertyChanged("Position");
+                        RaisePropertyChanged("Time");
+                        RaisePropertyChanged("Heading");
+                        RaisePropertyChanged("Speed");
+                        RaisePropertyChanged("Accuracy");
+                        RaisePropertyChanged("Altitude");
+                        RaisePropertyChanged("AltitudeAccuracy");
                     };
-                    this._map.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 0.05, 0.05));
-                    await _vehServ.SetPositionVehicle(aux);
-
-
-                    this._position = "Lat: " + position.Latitude.ToString() + " Long: " + position.Longitude.ToString();
-                    this._time = position.Timestamp.ToString();
-                    this._heading = position.Heading.ToString();
-                    this._speed = position.Speed.ToString();
-                    this._accuracy = position.Accuracy.ToString();
-                    this._altitude = position.Altitude.ToString();
-                    this._altitudeAccuracy = position.AltitudeAccuracy.ToString();
-
-
-                    RaisePropertyChanged("Position");
-                    RaisePropertyChanged("Time");
-                    RaisePropertyChanged("Heading");
-                    RaisePropertyChanged("Speed");
-                    RaisePropertyChanged("Accuracy");
-                    RaisePropertyChanged("Altitude");
-                    RaisePropertyChanged("AltitudeAccuracy");
-
-                    await Task.Delay(5000);
-                    StartListening();
-                };
+                }
+                await Task.Delay(5000);
+                StartListening();
+                
             }
             catch (Exception ex)
             {
