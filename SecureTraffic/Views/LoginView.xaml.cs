@@ -119,8 +119,8 @@ namespace SecureTraffic
                     if (comprobarPermisos)
                     {
                         var apiRequest =
-                    "https://www.facebook.com/dialog/oauth?client_id="
-                    + "173487199933858"//"1949845268596950"
+                    "https://www.facebook.com/dialog/oauth?client_id=" +
+                    "1949845268596950"
                     + "&display=popup&response_type=token&redirect_uri=https://securtraffic-49c23.firebaseapp.com/__/auth/handler";
 
                         var webView = new WebView
