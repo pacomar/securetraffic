@@ -244,7 +244,7 @@ namespace SecureTraffic
         }
         public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
         {
-            Device.OpenUri(new Uri("https://securtraffic.000webhostapp.com/"));
+            Device.OpenUri(new Uri("http://securtraffic.x10host.com/"));
         }
         //public async void OnTapGestureRecognizerTapped(object sender, EventArgs args)
         //{
