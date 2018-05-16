@@ -64,6 +64,17 @@ namespace SecureTraffic
                     }
                 };
 
+                RecoverPassword.Clicked += async (sender, args) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(email.Text))
+                    {
+                        await new UserViewModel().RecoverPassword(email.Text);
+                        await DisplayAlert("Advertencia", "Email de recuperación enviado", "OK");
+                    } else {
+                        await DisplayAlert("Advertencia", "Introduce un email", "OK");
+                    }
+                };
+
                 DoLoginGoogle.Clicked += async (sender, args) =>
                 {
                     bool comprobarPermisos = await ComprobarPermisos();

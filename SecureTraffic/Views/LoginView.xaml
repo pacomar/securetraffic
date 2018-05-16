@@ -18,7 +18,8 @@
 			<Entry Placeholder="email" x:Name="email"/>
 			<Entry IsPassword="true" Placeholder="Password" x:Name="password"/>
 			<Button Text="Iniciar sesión" x:Name="DoLogin" BackgroundColor="Green" TextColor="White" Font="Bold,20" BorderRadius="20"/>
-			<Button Text="Registrarse" x:Name="GoRegister" BackgroundColor="#fe8627" TextColor="White" Font="Bold,20" BorderRadius="20"/>
+            <Button Text="Registrarse" x:Name="GoRegister" BackgroundColor="#fe8627" TextColor="White" Font="Bold,20" BorderRadius="20"/>
+			<Button Text="Recordar contraseña" x:Name="RecoverPassword" BackgroundColor="#fe8627" TextColor="White" Font="Bold,20" BorderRadius="20"/>
 			<Button Text="Google" x:Name="DoLoginGoogle" BackgroundColor="#cf4332" TextColor="White" Font="Bold,20" BorderRadius="20"/>
 			<Button Text="Facebook" x:Name="DoLoginFacebook" BackgroundColor="#3c66c4" TextColor="White" Font="Bold,20" BorderRadius="20"/>
             <!--<Label Text="Terminos y condiciones" x:Name="DoTerminos" HorizontalTextAlignment="Center" Font="light,10" FontFamily="Futura" >

@@ -27,6 +27,19 @@ namespace SecureTraffic
 			return auth;
 		}
 
+        public async Task<bool> RecoverPassword(string email)
+        {
+            try
+            {
+                await this._authProvider.SendPasswordResetEmailAsync(email);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error al recuperar contraseña: " + ex.Message);
+            }
+            return true;
+        }
+
 		public async Task<FirebaseAuthLink> RegisteGoogleUser()
 		{
 			FirebaseAuthLink auth = null;

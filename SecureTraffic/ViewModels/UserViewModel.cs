@@ -20,6 +20,11 @@ namespace SecureTraffic
 			return auth != null;
 		}
 
+        public async Task<bool> RecoverPassword(string email)
+        {
+            return await this._userService.RecoverPassword(email);
+        }
+
 		public async Task<bool> ResgisterWithGoogle()
 		{
 			FirebaseAuthLink auth = await this._userService.RegisteGoogleUser();
